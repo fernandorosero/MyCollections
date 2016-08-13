@@ -12,9 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    Spinner spinnerCollections;
+    TextView lblMensaje;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +34,34 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        spinnerCollections = (Spinner)findViewById(R.id.spinnerCollections);
+        lblMensaje = (TextView)findViewById(R.id.lblMensaje);
+        List<String> listaColecciones = new ArrayList<String>();
+
+        listaColecciones.add("Transformers");
+        listaColecciones.add("Micro Machines");
+
+        ArrayAdapter<String> dataAdapter =
+                new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, listaColecciones);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerCollections.setAdapter(dataAdapter);
+
+        spinnerCollections.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        lblMensaje.setText("Seleccionado: " +
+                                parent.getItemAtPosition(position));
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        lblMensaje.setText("");
+                    }
+                });
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
