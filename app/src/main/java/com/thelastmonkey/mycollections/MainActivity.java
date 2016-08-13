@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.thelastmonkey.mycollections.dto.CollectionDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +41,40 @@ public class MainActivity extends AppCompatActivity
         lblMensaje = (TextView)findViewById(R.id.lblMensaje);
         List<String> listaColecciones = new ArrayList<String>();
 
-        listaColecciones.add("Transformers");
-        listaColecciones.add("Micro Machines");
+        List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
+
+
+        int i=0;
+        CollectionDTO coleDTO = new CollectionDTO();
+        coleDTO.setIdColecction("1");
+        coleDTO.setName("Transformers");
+        coleDTO.setDate("13/08/2016");
+        coleDTO.setImgPAth("../img/transformers.jpg");
+        listaColeccionesDTO.add(coleDTO);
+
+        CollectionDTO coleDTO1 = new CollectionDTO();
+        coleDTO1.setIdColecction("1");
+        coleDTO1.setName("Micro Machines");
+        coleDTO1.setDate("13/08/2016");
+        coleDTO1.setImgPAth("../img/microma.jpg");
+        listaColeccionesDTO.add(coleDTO1);
+
+        CollectionDTO coleDTO2 = new CollectionDTO();
+        coleDTO2.setIdColecction("1");
+        coleDTO2.setName("Barriguitas");
+        coleDTO2.setDate("13/08/2016");
+        coleDTO2.setImgPAth("../img/barriguitas.jpg");
+        listaColeccionesDTO.add(coleDTO2);
+
+        listaColecciones.clear();
+        for(CollectionDTO colection : listaColeccionesDTO){
+            listaColecciones.add(colection.getName());
+        }
+
 
         ArrayAdapter<String> dataAdapter =
-                new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, listaColecciones);
+                new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
+                        listaColecciones);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCollections.setAdapter(dataAdapter);
@@ -53,7 +84,7 @@ public class MainActivity extends AppCompatActivity
                     public void onItemSelected(AdapterView<?> parent,
                                                android.view.View v, int position, long id) {
                         lblMensaje.setText("Seleccionado: " +
-                                parent.getItemAtPosition(position));
+                                parent.getItemAtPosition(position) + " posición: " + position);
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
