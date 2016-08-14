@@ -47,17 +47,19 @@ public class MainActivity extends AppCompatActivity
         List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
 
         //Conecto con la bbdd
-        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(this, "BBDD_MiCollection",null, 1);
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(this, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
 
         //Acceso de escritura
         db = db_myCollection.getWritableDatabase();
         
         //Compruebo si existe la db
         if(db != null){
-            Toast.makeText(MainActivity.this, "Existe la tabla", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Se ha creado con éxito!", Toast.LENGTH_SHORT).show();
+            System.out.println("Se ha creado la BBDD");
+
         }else
         {
-            Toast.makeText(MainActivity.this, "No existe", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "No se ha podido completar", Toast.LENGTH_SHORT).show();
         }
 
         int i=0;

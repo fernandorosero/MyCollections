@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.thelastmonkey.mycollections.DBAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tatof on 13/08/2016.
  */
@@ -22,11 +25,45 @@ public class DatabaseMyCollections extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String cadenaSQL;
 
-        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_MyCollection;
+        List<String> listadoTablas = new ArrayList<String>();
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_Collection);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_Figura);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_CollectionFigura);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_Imagen);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_FiguraImagen);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_CollectionImagen);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_Clase);
+        listadoTablas.add(DBAdapter.BBDD_Crear_Tabla_FiguraClase);
+
+        for(String ejecutarSentencias : listadoTablas){
+            sqLiteDatabase.execSQL(ejecutarSentencias.toString());
+        }
+/*
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_Collection;
         sqLiteDatabase.execSQL(cadenaSQL);
 
         cadenaSQL = DBAdapter.BBDD_Crear_Tabla_Figura;
         sqLiteDatabase.execSQL(cadenaSQL);
+
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_CollectionFigura;
+        sqLiteDatabase.execSQL(cadenaSQL);
+
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_Imagen;
+        sqLiteDatabase.execSQL(cadenaSQL);
+
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_FiguraImagen;
+        sqLiteDatabase.execSQL(cadenaSQL);
+
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_CollectionImagen;
+        sqLiteDatabase.execSQL(cadenaSQL);
+
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_Clase;
+        sqLiteDatabase.execSQL(cadenaSQL);
+
+        cadenaSQL = DBAdapter.BBDD_Crear_Tabla_FiguraClase;
+        sqLiteDatabase.execSQL(cadenaSQL);
+*/
+
 
     }
 
