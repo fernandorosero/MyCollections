@@ -1,5 +1,6 @@
 package com.thelastmonkey.mycollections;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
 import com.thelastmonkey.mycollections.dto.CollectionDTO;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     Spinner spinnerCollections;
     TextView lblMensaje;
 
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,19 @@ public class MainActivity extends AppCompatActivity
 
         List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
 
+        //Conecto con la bbdd
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(this, "BBDD_MiCollection",null, 1);
+
+        //Acceso de escritura
+        db = db_myCollection.getWritableDatabase();
+        
+        //Compruebo si existe la db
+        if(db != null){
+            Toast.makeText(MainActivity.this, "Existe la tabla", Toast.LENGTH_SHORT).show();
+        }else
+        {
+            Toast.makeText(MainActivity.this, "No existe", Toast.LENGTH_SHORT).show();
+        }
 
         int i=0;
         CollectionDTO coleDTO = new CollectionDTO();
