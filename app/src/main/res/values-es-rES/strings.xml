@@ -5,4 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Ajustes</string>
+    <string name="agregarcoleccion">Crear Colcción</string>
+    <string name="title_activity_collection_main">Collección</string>
+    <string name="nombre">Nombre</string>
+    <string name="fecha">Fecha</string>
+    <string name="agregarimagen">Agregar Imagen</string>
+    <string name="guardarcoleccion">Guardar Colección</string>
 </resources>

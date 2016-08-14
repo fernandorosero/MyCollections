@@ -10,7 +10,6 @@ public class CollectionDTO implements Serializable {
     private String idColecction;
     private String name;
     private String date;
-    private String imgPAth;
 
     public String getIdColecction() {
         return idColecction;
@@ -35,15 +34,5 @@ public class CollectionDTO implements Serializable {
     public void setDate(String date) {
         this.date = date;
     }
-
-    public String getImgPAth() {
-        return imgPAth;
-    }
-
-    public void setImgPAth(String imgPAth) {
-        this.imgPAth = imgPAth;
-    }
-
-
 
 }

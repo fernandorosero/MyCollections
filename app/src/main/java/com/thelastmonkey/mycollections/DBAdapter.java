@@ -29,18 +29,15 @@ public class DBAdapter {
 
     //Declaracion para campos de tabla MiCollection
     public static final String idCollection = "idCollection";
-    public static final String name = "name";
-    public static final String date = "date";
-    public static final String imgPAth = "imgPath";
-
-
+    public static final String nombre = "nombre";
+    public static final String fecha = "fecha";
 
     private static final String TAG = "DBAdapter";
 
     //Creacion de tablas para la BBDD
-    public static final String BBDD_Crear_Tabla_Collection = "create table Collection (idCollection integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_Collection = "create table " + BBDD_Tabla_Collection + " (idCollection integer primary key autoincrement, " +
             "nombre text not null, fecha text not null);";
-    public static final String BBDD_Crear_Tabla_Figura = "create table Figura (idFigura integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_Figura = "create table " + BBDD_Tabla_Figura + " (idFigura integer primary key autoincrement, " +
             "nombre text not null, fechaCompra text not null, precioCompra integer not null, precioVenta integer," +
             "venta integer not null);";
     public static final String BBDD_Crear_Tabla_CollectionFigura = "create table CollectionFigura (idCollectionFigura integer primary key autoincrement, " +
@@ -57,6 +54,10 @@ public class DBAdapter {
             "idFigura integer not null, idClase integer not null);";
 
 
+    public static final String BBDD_Conculta_Collection = "select nombre from Collection;";
+    public static final String BBDD_Insertar_Collection = "insert into Collection(nombre, fecha) values('Transformadores'," +
+            " '14/08/2016');";
+
     private final Context context;
 
     private DatabaseMyCollections databaseMyCollections;
@@ -66,5 +67,9 @@ public class DBAdapter {
         this.context = context;
         //databaseMyCollections = new DatabaseMyCollections(context);
     }
+
+
+
+
 
 }

@@ -1,9 +1,12 @@
 package com.thelastmonkey.mycollections;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     Spinner spinnerCollections;
     TextView lblMensaje;
+    Button btnAgregarColeccion;
 
     SQLiteDatabase db;
 
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity
 
         spinnerCollections = (Spinner)findViewById(R.id.spinnerCollections);
         lblMensaje = (TextView)findViewById(R.id.lblMensaje);
+        btnAgregarColeccion = (Button)findViewById(R.id.btnAgregarColeccion);
+
         List<String> listaColecciones = new ArrayList<String>();
 
         List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
@@ -62,26 +69,42 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, "No se ha podido completar", Toast.LENGTH_SHORT).show();
         }
 
+        List<String> resultadoConsulta = new ArrayList<String>();
+
+        Cursor resultado;
+        String consultaSql;
+        consultaSql = DBAdapter.BBDD_Insertar_Collection;
+        //db.execSQL(consultaSql);
+        //consultaSql = DBAdapter.BBDD_Conculta_Collection;
+
+        //resu =  db.execSQL(consultaSql);
+
+        //resultado = db.rawQuery(consultaSql, null);
+
+
+
+       // for (int i=0; i<resultado.getCount(); i++){
+         //   Log.i("",resultado.get);
+
+       // }
+
         int i=0;
         CollectionDTO coleDTO = new CollectionDTO();
         coleDTO.setIdColecction("1");
         coleDTO.setName("Transformers");
         coleDTO.setDate("13/08/2016");
-        coleDTO.setImgPAth("../img/transformers.jpg");
         listaColeccionesDTO.add(coleDTO);
 
         CollectionDTO coleDTO1 = new CollectionDTO();
         coleDTO1.setIdColecction("1");
         coleDTO1.setName("Micro Machines");
         coleDTO1.setDate("13/08/2016");
-        coleDTO1.setImgPAth("../img/microma.jpg");
         listaColeccionesDTO.add(coleDTO1);
 
         CollectionDTO coleDTO2 = new CollectionDTO();
         coleDTO2.setIdColecction("1");
         coleDTO2.setName("Barriguitas");
         coleDTO2.setDate("13/08/2016");
-        coleDTO2.setImgPAth("../img/barriguitas.jpg");
         listaColeccionesDTO.add(coleDTO2);
 
         listaColecciones.clear();
@@ -110,6 +133,14 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
+
+        btnAgregarColeccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentLayoutNewCollection = new Intent(MainActivity.this,Collection_main.class);
+                startActivity(intentLayoutNewCollection);
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
