@@ -54,8 +54,8 @@ public class DBAdapter {
             "idFigura integer not null, idClase integer not null);";
 
 
-    public static final String BBDD_Conculta_Collection = "select nombre from Collection;";
-    public static final String BBDD_Insertar_Collection = "insert into Collection(nombre, fecha) values('Transformadores'," +
+    public static final String BBDD_Conculta_Collection = "select * from Collection;";
+    public static final String BBDD_Insertar_Collection = "insert into Collection(nombre, fecha) values('Transformers'," +
             " '14/08/2016');";
 
     private final Context context;

@@ -74,20 +74,20 @@ public class MainActivity extends AppCompatActivity
         Cursor resultado;
         String consultaSql;
         consultaSql = DBAdapter.BBDD_Insertar_Collection;
-        //db.execSQL(consultaSql);
-        //consultaSql = DBAdapter.BBDD_Conculta_Collection;
+        db.execSQL(consultaSql);
+        consultaSql = DBAdapter.BBDD_Conculta_Collection;
+        resultado = db.rawQuery(consultaSql, null);
 
-        //resu =  db.execSQL(consultaSql);
-
-        //resultado = db.rawQuery(consultaSql, null);
-
-
-
-       // for (int i=0; i<resultado.getCount(); i++){
-         //   Log.i("",resultado.get);
-
-       // }
-
+        Log.i("MyCollection", String.valueOf(resultado.getCount()));
+        List<String> listadoNombresCollection = new ArrayList<String>();
+        resultado.moveToFirst();
+        int columnIndex=resultado.getColumnIndex("1");
+        for(int i=0; i<resultado.getCount(); i++){
+            Log.i("",resultado.getString(resultado.getColumnIndex("nombre")));
+            Log.i("",resultado.getString(resultado.getColumnIndex("fecha")));
+            listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
+        }
+/*
         int i=0;
         CollectionDTO coleDTO = new CollectionDTO();
         coleDTO.setIdColecction("1");
@@ -111,11 +111,11 @@ public class MainActivity extends AppCompatActivity
         for(CollectionDTO colection : listaColeccionesDTO){
             listaColecciones.add(colection.getName());
         }
-
+*/
 
         ArrayAdapter<String> dataAdapter =
                 new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
-                        listaColecciones);
+                        listadoNombresCollection);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCollections.setAdapter(dataAdapter);
