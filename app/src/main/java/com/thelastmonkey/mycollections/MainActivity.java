@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Spinner spinnerCollections;
-    TextView lblMensaje;
     Button btnAgregarColeccion;
 
     SQLiteDatabase db;
@@ -45,8 +44,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        lblMensaje = (TextView)findViewById(R.id.lblMensaje);
         btnAgregarColeccion = (Button)findViewById(R.id.btnAgregarColeccion);
 
         //List<String> listaColecciones = new ArrayList<String>();
@@ -225,12 +222,15 @@ public class MainActivity extends AppCompatActivity
                 new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent,
                                                android.view.View v, int position, long id) {
-                        lblMensaje.setText("Seleccionado: " +
-                                parent.getItemAtPosition(position) + " posición: " + position);
+                        //lblMensaje.setText("Seleccionado: " +parent.getItemAtPosition(position) + " posición: " + position);
+                        Toast.makeText(MainActivity.this, "Seleccionado: " + parent.getItemAtPosition(position) +
+                                " posición: " + position, Toast.LENGTH_SHORT).show();
+                        //AQi la accion cuando se selecciona un elemento
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
-                        lblMensaje.setText("");
+                    //    lblMensaje.setText("");
+                        Toast.makeText(MainActivity.this, "Accion cuando no se selecciona naa", Toast.LENGTH_SHORT).show();
                     }
                 });
 
