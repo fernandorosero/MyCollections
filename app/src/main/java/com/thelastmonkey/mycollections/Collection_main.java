@@ -1,5 +1,6 @@
 package com.thelastmonkey.mycollections;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,7 +35,7 @@ public class Collection_main extends AppCompatActivity {
         btnGuardarColeccion = (Button)findViewById(R.id.btnGuardarColeccion);
 
         //Conecto a la bbdd
-        DatabaseMyCollections baseDatos = new DatabaseMyCollections(this, DBAdapter.BBDD_Nombre,null,1);
+        DatabaseMyCollections baseDatos = new DatabaseMyCollections(this, DBAdapter.BBDD_Nombre,null,DBAdapter.BBDD_VERSION);
 
         //Acceso de escritura
         db = baseDatos.getWritableDatabase();
@@ -43,20 +44,31 @@ public class Collection_main extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(db != null){
-                    //Inserto en la db
-                    String sql = "Insert into Collection(nombre,fecha) values";
-                    sql += "('" + editTextNombreCollection.getText().toString();
-                    sql += "','" + editTextFechaCollection.getText().toString() + "');";
+                    if(editTextNombreCollection.getText().toString().equals("")){
+                        editTextNombreCollection.requestFocus();
+                        Toast.makeText(Collection_main.this, "Rellene el campo Nombre!!", Toast.LENGTH_SHORT).show();
+                    }else if (editTextFechaCollection.getText().toString().equals("")){
+                        editTextFechaCollection.requestFocus();
+                        Toast.makeText(Collection_main.this, "Rellene el campo Fecha!!!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        //Inserto en la db
+                        String sql = "Insert into Collection(" + DBAdapter.Collection_nombre +","+DBAdapter.Collection_fecha+") values";
+                        sql += "('" + editTextNombreCollection.getText().toString();
+                        sql += "','" + editTextFechaCollection.getText().toString() + "');";
 
-                    Log.i("My Collection", sql.toString());
+                        Log.i("My Collection", sql.toString());
 
-                    //inserto
-                    db.execSQL(sql);
-                    Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
+                        //inserto
+                        db.execSQL(sql);
+                        Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
 
-                    //Borro los campos
-                    editTextNombreCollection.setText("");
-                    editTextFechaCollection.setText("");
+                        //Borro los campos
+                        editTextNombreCollection.setText("");
+                        editTextFechaCollection.setText("");
+                        Intent intentVolverMain = new Intent(Collection_main.this, MainActivity.class);
+                        startActivity(intentVolverMain);
+                    }
                 }
             }
         });

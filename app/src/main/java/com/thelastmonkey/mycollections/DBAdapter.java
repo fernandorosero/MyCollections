@@ -27,10 +27,10 @@ public class DBAdapter {
 
     public static final int BBDD_VERSION = 1;
 
-    //Declaracion para campos de tabla MiCollection
-    public static final String idCollection = "idCollection";
-    public static final String nombre = "nombre";
-    public static final String fecha = "fecha";
+    //Declaracion para campos de tabla Collection
+    public static final String Collection_idCollection = "idCollection";
+    public static final String Collection_nombre = "nombre";
+    public static final String Collection_fecha = "fecha";
 
     private static final String TAG = "DBAdapter";
 
@@ -40,17 +40,17 @@ public class DBAdapter {
     public static final String BBDD_Crear_Tabla_Figura = "create table " + BBDD_Tabla_Figura + " (idFigura integer primary key autoincrement, " +
             "nombre text not null, fechaCompra text not null, precioCompra integer not null, precioVenta integer," +
             "venta integer not null);";
-    public static final String BBDD_Crear_Tabla_CollectionFigura = "create table CollectionFigura (idCollectionFigura integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_CollectionFigura = "create table " + BBDD_Tabla_Collection_Figura + " (idCollectionFigura integer primary key autoincrement, " +
             "idCollection integer not null, idFigura integer not null, fecha text not null);";
-    public static final String BBDD_Crear_Tabla_Imagen = "create table Imagen (idImagen integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_Imagen = "create table " + BBDD_Tabla_Imagen + " (idImagen integer primary key autoincrement, " +
             "imgPath text not null);";
-    public static final String BBDD_Crear_Tabla_FiguraImagen = "create table FiguraImagen (idFiguraImagen integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_FiguraImagen = "create table " + BBDD_Tabla_Figura_Imagen + " (idFiguraImagen integer primary key autoincrement, " +
             "idFigura integer not null, idImagen integer not null, fecha text not null);";
-    public static final String BBDD_Crear_Tabla_CollectionImagen = "create table CollectionImagen (idCollectionImagen integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_CollectionImagen = "create table " + BBDD_Tabla_Collection_Imagen + " (idCollectionImagen integer primary key autoincrement, " +
             "idCollection integer not null, idImagen integer not null, fecha text not null);";
-    public static final String BBDD_Crear_Tabla_Clase = "create table Clase (idClase integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_Clase = "create table " + BBDD_Tabla_Clase + " (idClase integer primary key autoincrement, " +
             "nombreClase text not null);";
-    public static final String BBDD_Crear_Tabla_FiguraClase = "create table FiguraClase (idFiguraCLase integer primary key autoincrement, " +
+    public static final String BBDD_Crear_Tabla_FiguraClase = "create table " + BBDD_Tabla_Figura_Clase + " (idFiguraCLase integer primary key autoincrement, " +
             "idFigura integer not null, idClase integer not null);";
 
 

@@ -45,58 +45,15 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        spinnerCollections = (Spinner)findViewById(R.id.spinnerCollections);
+
         lblMensaje = (TextView)findViewById(R.id.lblMensaje);
         btnAgregarColeccion = (Button)findViewById(R.id.btnAgregarColeccion);
 
-        List<String> listaColecciones = new ArrayList<String>();
+        //List<String> listaColecciones = new ArrayList<String>();
 
         List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
 
-        //Conecto con la bbdd
-        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(this, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
-
-        //Acceso de escritura
-        db = db_myCollection.getWritableDatabase();
-        
-        //Compruebo si existe la db
-        if(db != null){
-            Toast.makeText(MainActivity.this, "Se ha creado con éxito!", Toast.LENGTH_SHORT).show();
-            System.out.println("Se ha creado la BBDD");
-
-        }else
-        {
-            Toast.makeText(MainActivity.this, "No se ha podido completar ", Toast.LENGTH_SHORT).show();
-        }
-
-        List<String> resultadoConsulta = new ArrayList<String>();
-
-        Cursor resultado;
-        String consultaSql;
-        //db.rawQuery(consultaSql, null);
-        consultaSql = DBAdapter.BBDD_Conculta_Collection;
-
-        resultado = db.rawQuery(consultaSql, null);
-
-
-        //db = db_myCollection.;
-        Log.i("MyCollection", String.valueOf(resultado.getCount()));
-        List<String> listadoNombresCollection = new ArrayList<String>();
-        resultado.moveToFirst();
-       //int columnIndex=resultado.getColumnIndex("nombre");
-        try {
-            for (int i = 0; i < resultado.getCount(); i++) {
-                Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
-                Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
-                listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
-                Log.i("***", listadoNombresCollection.get(i));
-
-                resultado.moveToNext();
-            }
-        }
-        catch(Exception e){}
-
-
+        consultaListadoBBDD();
 /*
         int i=0;
         CollectionDTO coleDTO = new CollectionDTO();
@@ -122,28 +79,6 @@ public class MainActivity extends AppCompatActivity
             listaColecciones.add(colection.getName());
         }
 */
-
-        ArrayAdapter<String> dataAdapter =
-                new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
-                        listadoNombresCollection);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerCollections.setAdapter(dataAdapter);
-
-        spinnerCollections.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent,
-                                               android.view.View v, int position, long id) {
-                        lblMensaje.setText("Seleccionado: " +
-                                parent.getItemAtPosition(position) + " posición: " + position);
-                    }
-
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        lblMensaje.setText("");
-                    }
-                });
-
-        db.close();
         btnAgregarColeccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -232,10 +167,74 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestart() {
         Log.i("Vuelve al main","vuelveeeeeeee");
+        consultaListadoBBDD();
         super.onRestart();
     }
 
     public void consultaListadoBBDD(){
+
+        spinnerCollections = (Spinner)findViewById(R.id.spinnerCollections);
+        //Conecto con la bbdd
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(this, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
+
+        //Acceso de escritura
+        db = db_myCollection.getWritableDatabase();
+
+        //Compruebo si existe la db
+        if(db != null){
+            Toast.makeText(MainActivity.this, "Conectado con éxito a la BBDD!", Toast.LENGTH_SHORT).show();
+        }else
+        {
+            Toast.makeText(MainActivity.this, "No se ha podido completar ", Toast.LENGTH_SHORT).show();
+        }
+
+        Cursor resultado;
+        String consultaSql;
+        //db.rawQuery(consultaSql, null);
+        consultaSql = DBAdapter.BBDD_Conculta_Collection;
+
+        resultado = db.rawQuery(consultaSql, null);
+
+
+        //db = db_myCollection.;
+        Log.i("MyCollection", String.valueOf(resultado.getCount()));
+        List<String> listadoNombresCollection = new ArrayList<String>();
+        resultado.moveToFirst();
+        //int columnIndex=resultado.getColumnIndex("nombre");
+        try {
+            for (int i = 0; i < resultado.getCount(); i++) {
+                Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
+                Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
+                listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
+                Log.i("***", listadoNombresCollection.get(i));
+
+                resultado.moveToNext();
+            }
+        }
+        catch(Exception e){}
+
+
+        ArrayAdapter<String> dataAdapter =
+                new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
+                        listadoNombresCollection);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerCollections.setAdapter(dataAdapter);
+
+        spinnerCollections.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        lblMensaje.setText("Seleccionado: " +
+                                parent.getItemAtPosition(position) + " posición: " + position);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        lblMensaje.setText("");
+                    }
+                });
+
+        //db.close();
 
     }
 }
