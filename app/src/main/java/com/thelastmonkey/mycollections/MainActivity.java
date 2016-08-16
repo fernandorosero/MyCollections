@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity
 
         Cursor resultado;
         String consultaSql;
-        //consultaSql = DBAdapter.BBDD_Insertar_Collection;
-        //Log.i("Es la sql:", consultaSql);
         //db.rawQuery(consultaSql, null);
         consultaSql = DBAdapter.BBDD_Conculta_Collection;
 
@@ -86,12 +84,17 @@ public class MainActivity extends AppCompatActivity
         List<String> listadoNombresCollection = new ArrayList<String>();
         resultado.moveToFirst();
        //int columnIndex=resultado.getColumnIndex("nombre");
-        for(int i=0; i<resultado.getCount(); i++){
-            Log.i("",resultado.getString(resultado.getColumnIndex("nombre")));
-            Log.i("",resultado.getString(resultado.getColumnIndex("fecha")));
-            listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
-           Log.i("***", listadoNombresCollection.get(i));
+        try {
+            for (int i = 0; i < resultado.getCount(); i++) {
+                Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
+                Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
+                listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
+                Log.i("***", listadoNombresCollection.get(i));
+
+                resultado.moveToNext();
+            }
         }
+        catch(Exception e){}
 
 
 /*
@@ -224,5 +227,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i("Vuelve al main","vuelveeeeeeee");
+        super.onRestart();
+    }
+
+    public void consultaListadoBBDD(){
+
     }
 }
