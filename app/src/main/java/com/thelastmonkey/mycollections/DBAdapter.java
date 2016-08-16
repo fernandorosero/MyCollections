@@ -55,8 +55,8 @@ public class DBAdapter {
 
 
     public static final String BBDD_Conculta_Collection = "select * from Collection;";
-    public static final String BBDD_Insertar_Collection = "insert into Collection(nombre, fecha) values('Transformers'," +
-            " '14/08/2016');";
+    public static final String BBDD_Insertar_Collection = "insert into Collection(nombre, fecha) values('TransFormers'," +
+            " '15/08/2016');";
 
     private final Context context;
 

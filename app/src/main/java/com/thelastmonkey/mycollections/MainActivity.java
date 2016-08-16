@@ -73,20 +73,27 @@ public class MainActivity extends AppCompatActivity
 
         Cursor resultado;
         String consultaSql;
-        consultaSql = DBAdapter.BBDD_Insertar_Collection;
-        db.execSQL(consultaSql);
+        //consultaSql = DBAdapter.BBDD_Insertar_Collection;
+        //Log.i("Es la sql:", consultaSql);
+        //db.rawQuery(consultaSql, null);
         consultaSql = DBAdapter.BBDD_Conculta_Collection;
+
         resultado = db.rawQuery(consultaSql, null);
 
+
+        //db = db_myCollection.;
         Log.i("MyCollection", String.valueOf(resultado.getCount()));
         List<String> listadoNombresCollection = new ArrayList<String>();
         resultado.moveToFirst();
-        int columnIndex=resultado.getColumnIndex("1");
+       //int columnIndex=resultado.getColumnIndex("nombre");
         for(int i=0; i<resultado.getCount(); i++){
             Log.i("",resultado.getString(resultado.getColumnIndex("nombre")));
             Log.i("",resultado.getString(resultado.getColumnIndex("fecha")));
             listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
+           Log.i("***", listadoNombresCollection.get(i));
         }
+
+
 /*
         int i=0;
         CollectionDTO coleDTO = new CollectionDTO();
@@ -133,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-
+        db.close();
         btnAgregarColeccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
