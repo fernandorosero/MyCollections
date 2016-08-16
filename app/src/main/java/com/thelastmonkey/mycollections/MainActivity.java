@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
 
         }else
         {
-            Toast.makeText(MainActivity.this, "No se ha podido completar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "No se ha podido completar ", Toast.LENGTH_SHORT).show();
         }
 
         List<String> resultadoConsulta = new ArrayList<String>();
