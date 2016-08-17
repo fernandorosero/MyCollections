@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -116,8 +117,18 @@ public class Collection_main extends AppCompatActivity {
                         Log.i("My Collection", sql.toString());
 
                         //inserto
-                        db.execSQL(sql);
+                         //db.execSQL(sql);
+                        Cursor resultado;
+                        resultado = db.rawQuery(sql, null);
+                        resultado.moveToFirst();
+                        int cant = resultado.getCount();
+                        Log.i("Numero de elemntos" , String.valueOf(cant));
+                        //Log.i("", resultado.getString("idCollection"));
+
                         Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
+
+
+
 
                         //Borro los campos
                         editTextNombreCollection.setText("");
