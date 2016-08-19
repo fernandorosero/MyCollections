@@ -114,20 +114,25 @@ public class Collection_main extends AppCompatActivity {
                         sql += "('" + editTextNombreCollection.getText().toString();
                         sql += "','" + editTextFechaCollection.getText().toString() + "');";
 
-                        Log.i("My Collection", sql.toString());
+                        Log.i("My Collection", sql);
 
                         //inserto
-                         //db.execSQL(sql);
+                        db.execSQL(sql);
                         Cursor resultado;
+                        sql = "select * from Collection where idCollection = (select max(idCollection) FROM Collection);";
                         resultado = db.rawQuery(sql, null);
                         resultado.moveToFirst();
                         int cant = resultado.getCount();
-                        Log.i("Numero de elemntos" , String.valueOf(cant));
+                        Log.i("Numero de elementos" , String.valueOf(cant));
+                        Log.i("", resultado.getString(resultado.getColumnIndex("idCollection")));
+                        Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
+                        Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
+
                         //Log.i("", resultado.getString("idCollection"));
 
                         Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
 
-
+                        resultado.close();
 
 
                         //Borro los campos
