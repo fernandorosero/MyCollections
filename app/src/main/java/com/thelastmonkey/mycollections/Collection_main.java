@@ -37,6 +37,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
+import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 import java.io.File;
 
@@ -124,15 +125,30 @@ public class Collection_main extends AppCompatActivity {
                         resultado.moveToFirst();
                         int cant = resultado.getCount();
                         Log.i("Numero de elementos" , String.valueOf(cant));
-                        Log.i("", resultado.getString(resultado.getColumnIndex("idCollection")));
-                        Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
-                        Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
+                        Log.i("MyCollection", resultado.getString(resultado.getColumnIndex("idCollection")));
+                        Log.i("MyCollection", resultado.getString(resultado.getColumnIndex("nombre")));
+                        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, resultado.getString(resultado.getColumnIndex("fecha")));
 
-                        //Log.i("", resultado.getString("idCollection"));
 
-                        Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
+                        Cursor imagenCursor;
+
+                        sql = "insert into Image(imgPath) values('" + mPath + "');";
+                        db.execSQL(sql);
+                        sql = "select * from Imagen where idImagen = (select max(idImagen) from Imagen);";
+                        imagenCursor = db.rawQuery(sql, null);
+                        imagenCursor.moveToFirst();
+                        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")));
+                        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
+
+                        sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values('"+ resultado.getString(resultado.getColumnIndex("idCollection"))
+                                +"','"+imagenCursor.getString(imagenCursor.getColumnIndex("idImagen"))+"','"+resultado.getString(resultado.getColumnIndex("fecha"))+"');";
+
 
                         resultado.close();
+                        imagenCursor.close();
+                        Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
+
+
 
 
                         //Borro los campos
