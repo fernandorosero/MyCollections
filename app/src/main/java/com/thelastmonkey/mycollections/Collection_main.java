@@ -135,6 +135,8 @@ public class Collection_main extends AppCompatActivity {
                         Cursor imagenCursor = null;
                        // imageViewCollectionNuevo.
                         if(imagenPathGuardar.length()>0){
+                            Log.i("","");
+                            System.out.println("Parametro antes de enviar imagenPathGuardar >=>"+ imagenPathGuardar.toString());
                             sql = "insert into Imagen(imgPath) values('" + imagenPathGuardar + "');";
                             db.execSQL(sql);
                             sql = "select * from Imagen where idImagen = (select max(idImagen) from Imagen);";
