@@ -3,6 +3,7 @@ package com.thelastmonkey.mycollections;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
 import com.thelastmonkey.mycollections.dto.CollectionDTO;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     Spinner spinnerCollections;
     Button btnAgregarColeccion;
-
+    ImageView imageViewCollection;
     SQLiteDatabase db;
 
     @Override
@@ -45,7 +48,14 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         btnAgregarColeccion = (Button)findViewById(R.id.btnAgregarColeccion);
+        imageViewCollection = (ImageView)findViewById(R.id.imageViewCollection);
+        //File newFile = new File("content://media/external/images/media/63911");
 
+        imageViewCollection.setImageURI(Uri.parse("storage/emulated/0/MyPictureAppColecction/PictureApp/1471396234.jpg"));
+        //imageViewCollection.setImageURI(Uri.fromFile(newFile));
+        //imageViewCollection.setImageURI(uri);
+        //storage/emulated/0/MyPictureAppColecction/PictureApp/1471648225.jpg
+        //content://media/external/images/media/63910
         //List<String> listaColecciones = new ArrayList<String>();
 
         List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
@@ -236,5 +246,7 @@ public class MainActivity extends AppCompatActivity
 
         //db.close();
 
+        resultado.close();
     }
+
 }

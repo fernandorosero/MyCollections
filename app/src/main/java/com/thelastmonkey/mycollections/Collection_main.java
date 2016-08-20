@@ -61,6 +61,8 @@ public class Collection_main extends AppCompatActivity {
 
     private String mPath;
 
+    private String imagenPathGuardar;
+
     SQLiteDatabase db;
 
     @Override
@@ -130,18 +132,23 @@ public class Collection_main extends AppCompatActivity {
                         Log.i(MyCollectionUtil.TAG_MY_COLLECTION, resultado.getString(resultado.getColumnIndex("fecha")));
 
 
-                        Cursor imagenCursor;
+                        Cursor imagenCursor = null;
+                       // imageViewCollectionNuevo.
+                        if(imagenPathGuardar.length()>0){
+                            sql = "insert into Imagen(imgPath) values('" + imagenPathGuardar + "');";
+                            db.execSQL(sql);
+                            sql = "select * from Imagen where idImagen = (select max(idImagen) from Imagen);";
+                            imagenCursor = db.rawQuery(sql, null);
+                            imagenCursor.moveToFirst();
+                            Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")));
+                            Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
 
-                        sql = "insert into Image(imgPath) values('" + mPath + "');";
-                        db.execSQL(sql);
-                        sql = "select * from Imagen where idImagen = (select max(idImagen) from Imagen);";
-                        imagenCursor = db.rawQuery(sql, null);
-                        imagenCursor.moveToFirst();
-                        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")));
-                        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
+                            sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values('"+ resultado.getString(resultado.getColumnIndex("idCollection"))
+                                    +"','"+imagenCursor.getString(imagenCursor.getColumnIndex("idImagen"))+"','"+resultado.getString(resultado.getColumnIndex("fecha"))+"');";
 
-                        sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values('"+ resultado.getString(resultado.getColumnIndex("idCollection"))
-                                +"','"+imagenCursor.getString(imagenCursor.getColumnIndex("idImagen"))+"','"+resultado.getString(resultado.getColumnIndex("fecha"))+"');";
+
+                        }
+
 
 
                         resultado.close();
@@ -275,7 +282,7 @@ public class Collection_main extends AppCompatActivity {
 
             mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
                     + File.separator + imageName;
-
+            Log.i(" Es el mPath:",mPath);
             File newFile = new File(mPath);
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -295,6 +302,7 @@ public class Collection_main extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         mPath = savedInstanceState.getString("file_path");
+        Log.i(" Es el mPath:",mPath);
     }
 
     @Override
@@ -310,6 +318,7 @@ public class Collection_main extends AppCompatActivity {
                                 @Override
                                 public void onScanCompleted(String path, Uri uri) {
                                     Log.i("ExternalStorage", "Scanned " + path + ":");
+                                    imagenPathGuardar = path;
                                     Log.i("ExternalStorage", "-> Uri = " + uri);
                                 }
                             });
@@ -320,6 +329,8 @@ public class Collection_main extends AppCompatActivity {
                     break;
                 case SELECT_PICTURE:
                     Uri path = data.getData();
+                    Log.i("path galeria ok: " , String.valueOf(data.getData()));
+                    imagenPathGuardar = String.valueOf(data.getData());
                     imageViewCollectionNuevo.setImageURI(path);
                     break;
 
