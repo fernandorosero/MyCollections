@@ -51,17 +51,18 @@ public class MainActivity extends AppCompatActivity
         imageViewCollection = (ImageView)findViewById(R.id.imageViewCollection);
         //File newFile = new File("content://media/external/images/media/63911");
 
-        imageViewCollection.setImageURI(Uri.parse("storage/emulated/0/MyPictureAppColecction/PictureApp/1471396234.jpg"));
+        //imageViewCollection.setImageURI(Uri.parse("storage/emulated/0/MyPictureAppColecction/PictureApp/1471396234.jpg"));
         //imageViewCollection.setImageURI(Uri.fromFile(newFile));
         //imageViewCollection.setImageURI(uri);
         //storage/emulated/0/MyPictureAppColecction/PictureApp/1471648225.jpg
         //content://media/external/images/media/63910
         //List<String> listaColecciones = new ArrayList<String>();
 
-        List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
+
 
         consultaListadoBBDD();
 /*
+        List<CollectionDTO> listaColeccionesDTO = new ArrayList<CollectionDTO>();
         int i=0;
         CollectionDTO coleDTO = new CollectionDTO();
         coleDTO.setIdColecction("1");
@@ -189,64 +190,103 @@ public class MainActivity extends AppCompatActivity
 
         //Compruebo si existe la db
         if(db != null){
-            Toast.makeText(MainActivity.this, "Conectado con éxito a la BBDD!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "Conectado con éxito a la BBDD!", Toast.LENGTH_SHORT).show();
+
+            Cursor resultado;
+            String consultaSql;
+            //db.rawQuery(consultaSql, null);
+            consultaSql = DBAdapter.BBDD_Conculta_Collection;
+
+            resultado = db.rawQuery(consultaSql, null);
+
+
+            //db = db_myCollection.;
+            Log.i("MyCollection", String.valueOf(resultado.getCount()));
+            final List<String> listadoNombresCollection = new ArrayList<String>();
+            final List<Integer> listadoIdCollection = new ArrayList<Integer>();
+            resultado.moveToFirst();
+            //int columnIndex=resultado.getColumnIndex("nombre");
+            try {
+                for (int i = 0; i < resultado.getCount(); i++) {
+                    Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
+
+                    // Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
+                    listadoIdCollection.add(Integer.parseInt(resultado.getString(resultado.getColumnIndex("idCollection"))));
+                    listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
+                    //Log.i("***", listadoNombresCollection.get(i));
+
+                    resultado.moveToNext();
+                }
+            }
+            catch(Exception e){}
+
+
+            ArrayAdapter<String> dataAdapter =
+                    new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
+                            listadoNombresCollection);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            spinnerCollections.setAdapter(dataAdapter);
+
+            spinnerCollections.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent,
+                                                   android.view.View v, int position, long id) {
+                            //lblMensaje.setText("Seleccionado: " +parent.getItemAtPosition(position) + " posición: " + position);
+                            //      Toast.makeText(MainActivity.this, "Seleccionado: " + parent.getItemAtPosition(position) +
+                            //              " posición: " + position, Toast.LENGTH_SHORT).show();
+                            //AQi la accion cuando se selecciona un elemento
+                            //Log.i("idCollection:",Integer.toString(listadoIdCollection.get(position)));
+                            //Log.i("nombre:",listadoNombresCollection.get(position));
+                            consultaPathCollectionImagen(listadoIdCollection.get(position));
+                        }
+
+
+
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            //    lblMensaje.setText("");
+                            Toast.makeText(MainActivity.this, "Accion cuando no se selecciona naa", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //db.close();
+
+            resultado.close();
+
+
         }else
         {
             Toast.makeText(MainActivity.this, "No se ha podido completar ", Toast.LENGTH_SHORT).show();
         }
 
-        Cursor resultado;
-        String consultaSql;
-        //db.rawQuery(consultaSql, null);
-        consultaSql = DBAdapter.BBDD_Conculta_Collection;
+    }
 
-        resultado = db.rawQuery(consultaSql, null);
+    public void consultaPathCollectionImagen(int idCollection){
+        Cursor resultado = null;
+        String sql;
 
-
-        //db = db_myCollection.;
-        Log.i("MyCollection", String.valueOf(resultado.getCount()));
-        List<String> listadoNombresCollection = new ArrayList<String>();
-        resultado.moveToFirst();
-        //int columnIndex=resultado.getColumnIndex("nombre");
+        //Log.i("Esto llega:",Integer.toString(idCollection));
         try {
-            for (int i = 0; i < resultado.getCount(); i++) {
-                Log.i("", resultado.getString(resultado.getColumnIndex("nombre")));
-                Log.i("", resultado.getString(resultado.getColumnIndex("fecha")));
-                listadoNombresCollection.add(resultado.getString(resultado.getColumnIndex("nombre")));
-                Log.i("***", listadoNombresCollection.get(i));
+            sql = "select * from CollectionImagen where idCollection = '" + idCollection + "';";
 
-                resultado.moveToNext();
-            }
+            resultado = db.rawQuery(sql, null);
+            resultado.moveToFirst();
+            String idImagen=resultado.getString(resultado.getColumnIndex("idImagen"));
+            resultado.close();
+            //Log.i("idImagen", resultado.getString(resultado.getColumnIndex("idImagen")));
+
+            Cursor resultado2=null;
+            sql = "select * from Imagen where idImagen = '"+idImagen+"';";
+
+            resultado2 = db.rawQuery(sql, null);
+            resultado2.moveToFirst();
+            imageViewCollection.setImageURI(Uri.parse(resultado2.getString(resultado2.getColumnIndex("imgPath"))));
+            resultado2.close();
         }
-        catch(Exception e){}
-
-
-        ArrayAdapter<String> dataAdapter =
-                new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
-                        listadoNombresCollection);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerCollections.setAdapter(dataAdapter);
-
-        spinnerCollections.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent,
-                                               android.view.View v, int position, long id) {
-                        //lblMensaje.setText("Seleccionado: " +parent.getItemAtPosition(position) + " posición: " + position);
-                        Toast.makeText(MainActivity.this, "Seleccionado: " + parent.getItemAtPosition(position) +
-                                " posición: " + position, Toast.LENGTH_SHORT).show();
-                        //AQi la accion cuando se selecciona un elemento
-                    }
-
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    //    lblMensaje.setText("");
-                        Toast.makeText(MainActivity.this, "Accion cuando no se selecciona naa", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        //db.close();
-
-        resultado.close();
+        catch (Exception e){
+            System.out.println("ERROR:"+e);
+        }
+        //resultado.close();
     }
 
 }

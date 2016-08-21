@@ -134,8 +134,9 @@ public class Collection_main extends AppCompatActivity {
 
                         Cursor imagenCursor = null;
                        // imageViewCollectionNuevo.
-                        if(imagenPathGuardar.length()>0){
-                            Log.i("","");
+                        if(imagenPathGuardar.equals("")){}
+                        else{
+                            //Log.i("entra a insertar","imagen +******");
                             System.out.println("Parametro antes de enviar imagenPathGuardar >=>"+ imagenPathGuardar.toString());
                             sql = "insert into Imagen(imgPath) values('" + imagenPathGuardar + "');";
                             db.execSQL(sql);
@@ -143,11 +144,12 @@ public class Collection_main extends AppCompatActivity {
                             imagenCursor = db.rawQuery(sql, null);
                             imagenCursor.moveToFirst();
                             Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")));
-                            Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
+                            //Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
 
-                            sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values('"+ resultado.getString(resultado.getColumnIndex("idCollection"))
-                                    +"','"+imagenCursor.getString(imagenCursor.getColumnIndex("idImagen"))+"','"+resultado.getString(resultado.getColumnIndex("fecha"))+"');";
+                            sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values("+ resultado.getString(resultado.getColumnIndex("idCollection"))
+                                    +","+imagenCursor.getString(imagenCursor.getColumnIndex("idImagen"))+",'"+resultado.getString(resultado.getColumnIndex("fecha"))+"');";
 
+                            db.execSQL(sql);
 
                         }
 
