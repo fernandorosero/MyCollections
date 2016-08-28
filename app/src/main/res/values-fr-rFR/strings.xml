@@ -11,4 +11,5 @@
     <string name="nombre">Name</string>
     <string name="agregarimagen">Upload Image</string>
     <string name="guardarcoleccion">Save Collection</string>
+    <string name="editar">Edit</string>
 </resources>

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
 import com.thelastmonkey.mycollections.dto.CollectionDTO;
+import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     Spinner spinnerCollections;
     Button btnAgregarColeccion;
+    Button btnEditar;
     ImageView imageViewCollection;
     SQLiteDatabase db;
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         btnAgregarColeccion = (Button)findViewById(R.id.btnAgregarColeccion);
+        btnEditar = (Button)findViewById(R.id.btnEditar);
         imageViewCollection = (ImageView)findViewById(R.id.imageViewCollection);
         //File newFile = new File("content://media/external/images/media/63911");
 
@@ -95,6 +98,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(MyCollectionUtil.TAG_MY_COLLECTION,"Press edit");
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -11,4 +11,5 @@
     <string name="fecha">Fecha</string>
     <string name="agregarimagen">Agregar Imagen</string>
     <string name="guardarcoleccion">Guardar Colección</string>
+    <string name="editar">Editar</string>
 </resources>

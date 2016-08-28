@@ -42,12 +42,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnAgregarColeccion"
-        android:text="@string/agregarcoleccion"
-        android:layout_gravity="center"
+    <LinearLayout
         android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnEditar"
+            android:text="@string/editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnAgregarColeccion"
+            android:text="@string/agregarcoleccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>
