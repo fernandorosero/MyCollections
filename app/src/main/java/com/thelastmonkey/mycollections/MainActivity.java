@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity
     Button btnAgregarColeccion;
     Button btnEditar;
     ImageView imageViewCollection;
+    TextView txtIdCollection;
+    TextView txtPathImagen;
+
     SQLiteDatabase db;
 
     @Override
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         btnAgregarColeccion = (Button)findViewById(R.id.btnAgregarColeccion);
         btnEditar = (Button)findViewById(R.id.btnEditar);
         imageViewCollection = (ImageView)findViewById(R.id.imageViewCollection);
+        txtIdCollection = (TextView)findViewById(R.id.txtIdCollection);
+        txtPathImagen = (TextView)findViewById(R.id.txtPathImagen);
         //File newFile = new File("content://media/external/images/media/63911");
 
         //imageViewCollection.setImageURI(Uri.parse("storage/emulated/0/MyPictureAppColecction/PictureApp/1471396234.jpg"));
@@ -102,6 +107,20 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Log.i(MyCollectionUtil.TAG_MY_COLLECTION,"Press edit");
+                Intent intent = new Intent(MainActivity.this, Collection_main.class);
+
+                //Creo la informacion para enviar para editar
+                Bundle bundleEditar = new Bundle();
+
+                bundleEditar.putString("nombre_colleccion","Fernando Rosero Marcos Rosero");
+                //bundleEditar.putString("nombre_coleccion",spinnerCollections.getOnItemSelectedListener().toString());
+                //bundleEditar.putString("path_imagen",);
+
+                //Añado la información al intent
+                intent.putExtras(bundleEditar);
+
+                //Inicio la nueva actividad
+                startActivity(intent);
             }
         });
 
@@ -229,6 +248,10 @@ public class MainActivity extends AppCompatActivity
             }
             catch(Exception e){}
 
+            //Cargo el id de la Colleccion la primera vez si existe
+            if (listadoIdCollection.size()>0){
+                txtIdCollection.setText(listadoIdCollection.get(0).toString());
+            }
 
             ArrayAdapter<String> dataAdapter =
                     new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
@@ -248,6 +271,8 @@ public class MainActivity extends AppCompatActivity
                             //Log.i("idCollection:",Integer.toString(listadoIdCollection.get(position)));
                             //Log.i("nombre:",listadoNombresCollection.get(position));
                             consultaPathCollectionImagen(listadoIdCollection.get(position));
+                            //Paso el idCollection seleccionado
+                            txtIdCollection.setText(listadoIdCollection.get(position).toString());
                         }
 
 
@@ -290,6 +315,7 @@ public class MainActivity extends AppCompatActivity
             resultado2 = db.rawQuery(sql, null);
             resultado2.moveToFirst();
             imageViewCollection.setImageURI(Uri.parse(resultado2.getString(resultado2.getColumnIndex("imgPath"))));
+            txtPathImagen.setText(resultado2.getString(resultado2.getColumnIndex("imgPath")).toString());
             resultado2.close();
         }
         catch (Exception e){

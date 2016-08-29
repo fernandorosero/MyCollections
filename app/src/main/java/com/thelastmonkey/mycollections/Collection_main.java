@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //Importante
@@ -51,6 +52,7 @@ public class Collection_main extends AppCompatActivity {
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
 
+    TextView txtPrueba;
 
     EditText editTextNombreCollection;
     EditText editTextFechaCollection;
@@ -72,6 +74,8 @@ public class Collection_main extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        txtPrueba = (TextView)findViewById(R.id.txtPrueba);
+
         editTextNombreCollection = (EditText)findViewById(R.id.editTextNombreCollection);
         editTextFechaCollection = (EditText)findViewById(R.id.editTextFechaCollection);
         btnGuardarColeccion = (Button)findViewById(R.id.btnGuardarColeccion);
@@ -86,6 +90,14 @@ public class Collection_main extends AppCompatActivity {
 
         //Flecha en el menú para ir hacia atrás
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        //Recojo los datos enviados
+        try {
+            Bundle bundle = getIntent().getExtras();
+            txtPrueba.setText(bundle.getString("nombre_colleccion"));
+        }
+        catch (Exception e){}
 
         btnAgregarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +207,7 @@ public class Collection_main extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 onBackPressed();
+                //finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
