@@ -1,6 +1,7 @@
 package com.thelastmonkey.mycollections;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,6 +39,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
+import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 import java.io.File;
@@ -53,6 +55,9 @@ public class Collection_main extends AppCompatActivity {
     private final int SELECT_PICTURE = 300;
 
     TextView txtPrueba;
+    TextView txtPrueba1;
+    TextView txtPrueba2;
+
 
     EditText editTextNombreCollection;
     EditText editTextFechaCollection;
@@ -75,6 +80,9 @@ public class Collection_main extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         txtPrueba = (TextView)findViewById(R.id.txtPrueba);
+        txtPrueba1 = (TextView)findViewById(R.id.txtPrueba1);
+        txtPrueba2 = (TextView)findViewById(R.id.txtPrueba2);
+
 
         editTextNombreCollection = (EditText)findViewById(R.id.editTextNombreCollection);
         editTextFechaCollection = (EditText)findViewById(R.id.editTextFechaCollection);
@@ -95,7 +103,12 @@ public class Collection_main extends AppCompatActivity {
         //Recojo los datos enviados
         try {
             Bundle bundle = getIntent().getExtras();
-            txtPrueba.setText(bundle.getString("nombre_colleccion"));
+            txtPrueba.setText(bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION));
+            txtPrueba1.setText(bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
+            txtPrueba2.setText(bundle.getString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN));
+
+            setTitle("Editar Colección: " + txtPrueba1.getText());
+
         }
         catch (Exception e){}
 

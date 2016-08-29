@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
 import com.thelastmonkey.mycollections.dto.CollectionDTO;
+import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 import java.io.File;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     Button btnEditar;
     ImageView imageViewCollection;
     TextView txtIdCollection;
+    TextView txtNombreCollection;
     TextView txtPathImagen;
 
     SQLiteDatabase db;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         btnEditar = (Button)findViewById(R.id.btnEditar);
         imageViewCollection = (ImageView)findViewById(R.id.imageViewCollection);
         txtIdCollection = (TextView)findViewById(R.id.txtIdCollection);
+        txtNombreCollection = (TextView)findViewById(R.id.txtNombreCollection);
         txtPathImagen = (TextView)findViewById(R.id.txtPathImagen);
         //File newFile = new File("content://media/external/images/media/63911");
 
@@ -112,7 +115,10 @@ public class MainActivity extends AppCompatActivity
                 //Creo la informacion para enviar para editar
                 Bundle bundleEditar = new Bundle();
 
-                bundleEditar.putString("nombre_colleccion","Fernando Rosero Marcos Rosero");
+                bundleEditar.putString(MyCollectionConstant.PARAMETRO_ID_COLLECTION,txtIdCollection.getText().toString());
+                bundleEditar.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION, txtNombreCollection.getText().toString());
+                bundleEditar.putString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN, txtPathImagen.getText().toString());
+
                 //bundleEditar.putString("nombre_coleccion",spinnerCollections.getOnItemSelectedListener().toString());
                 //bundleEditar.putString("path_imagen",);
 
@@ -251,6 +257,7 @@ public class MainActivity extends AppCompatActivity
             //Cargo el id de la Colleccion la primera vez si existe
             if (listadoIdCollection.size()>0){
                 txtIdCollection.setText(listadoIdCollection.get(0).toString());
+                txtNombreCollection.setText(listadoNombresCollection.get(0).toString());
             }
 
             ArrayAdapter<String> dataAdapter =
@@ -273,6 +280,7 @@ public class MainActivity extends AppCompatActivity
                             consultaPathCollectionImagen(listadoIdCollection.get(position));
                             //Paso el idCollection seleccionado
                             txtIdCollection.setText(listadoIdCollection.get(position).toString());
+                            txtNombreCollection.setText(listadoNombresCollection.get(position).toString());
                         }
 
 
