@@ -43,9 +43,13 @@ import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Collection_main extends AppCompatActivity {
 
+    private static final String EDITAR = "Editar: ";
+    private static final String CERO = "0";
     //DECLARO CONSTANTES PARA GUARDAR LAS IMAGENES
     private static  String APP_DIRECTORY = "MyPictureAppColecction/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
@@ -54,9 +58,9 @@ public class Collection_main extends AppCompatActivity {
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
 
-    TextView txtPrueba;
-    TextView txtPrueba1;
-    TextView txtPrueba2;
+    TextView txtIdCollectionEdit;
+    TextView txtNombreCollectionEdit;
+    TextView txtPathImagenEdit;
 
 
     EditText editTextNombreCollection;
@@ -79,9 +83,9 @@ public class Collection_main extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        txtPrueba = (TextView)findViewById(R.id.txtPrueba);
-        txtPrueba1 = (TextView)findViewById(R.id.txtPrueba1);
-        txtPrueba2 = (TextView)findViewById(R.id.txtPrueba2);
+        txtIdCollectionEdit = (TextView)findViewById(R.id.txtIdCollectionEdit);
+        txtNombreCollectionEdit = (TextView)findViewById(R.id.txtNombreCollectionEdit);
+        txtPathImagenEdit = (TextView)findViewById(R.id.txtPathImagenEdit);
 
 
         editTextNombreCollection = (EditText)findViewById(R.id.editTextNombreCollection);
@@ -99,15 +103,21 @@ public class Collection_main extends AppCompatActivity {
         //Flecha en el menú para ir hacia atrás
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mostrarFecha();
 
         //Recojo los datos enviados
         try {
             Bundle bundle = getIntent().getExtras();
-            txtPrueba.setText(bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION));
-            txtPrueba1.setText(bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
-            txtPrueba2.setText(bundle.getString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN));
+            txtIdCollectionEdit.setText(bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION));
+            txtNombreCollectionEdit.setText(bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
+            txtPathImagenEdit.setText(bundle.getString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN));
 
-            setTitle("Editar Colección: " + txtPrueba1.getText());
+            setTitle(EDITAR + txtNombreCollectionEdit.getText());
+            editTextNombreCollection.setText(bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
+            imageViewCollectionNuevo.setImageURI(Uri.parse(bundle.getString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN)));
+            imagenPathGuardar = (bundle.getString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN)).toString();
+            //imageViewCollection.setImageURI(Uri.parse("storage/emulated/0/MyPictureAppColecction/PictureApp/1471396234.jpg"));
+
 
         }
         catch (Exception e){}
@@ -128,74 +138,76 @@ public class Collection_main extends AppCompatActivity {
         btnGuardarColeccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(db != null){
-                    if(editTextNombreCollection.getText().toString().equals("")){
-                        editTextNombreCollection.requestFocus();
-                        Toast.makeText(Collection_main.this, "Rellene el campo Nombre!!", Toast.LENGTH_SHORT).show();
-                    }else if (editTextFechaCollection.getText().toString().equals("")){
-                        editTextFechaCollection.requestFocus();
-                        Toast.makeText(Collection_main.this, "Rellene el campo Fecha!!!", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        //Inserto en la db
-                        String sql = "Insert into Collection(" + DBAdapter.Collection_nombre +","+DBAdapter.Collection_fecha+") values";
-                        sql += "('" + editTextNombreCollection.getText().toString();
-                        sql += "','" + editTextFechaCollection.getText().toString() + "');";
+                if (db != null) {
+                    if (txtIdCollectionEdit.getText().toString().equals(CERO)) {
+                        if (editTextNombreCollection.getText().toString().equals("")) {
+                            editTextNombreCollection.requestFocus();
+                            Toast.makeText(Collection_main.this, "Rellene el campo Nombre!!", Toast.LENGTH_SHORT).show();
+                        } else if (editTextFechaCollection.getText().toString().equals("")) {
+                            editTextFechaCollection.requestFocus();
+                            Toast.makeText(Collection_main.this, "Rellene el campo Fecha!!!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Inserto en la db
+                            String sql = "Insert into Collection(" + DBAdapter.Collection_nombre + "," + DBAdapter.Collection_fecha + ") values";
+                            sql += "('" + editTextNombreCollection.getText().toString();
+                            sql += "','" + editTextFechaCollection.getText().toString() + "');";
 
-                        Log.i("My Collection", sql);
+                            Log.i("My Collection", sql);
 
-                        //inserto
-                        db.execSQL(sql);
-                        Cursor resultado;
-                        sql = "select * from Collection where idCollection = (select max(idCollection) FROM Collection);";
-                        resultado = db.rawQuery(sql, null);
-                        resultado.moveToFirst();
-                        int cant = resultado.getCount();
-                        Log.i("Numero de elementos" , String.valueOf(cant));
-                        Log.i("MyCollection", resultado.getString(resultado.getColumnIndex("idCollection")));
-                        Log.i("MyCollection", resultado.getString(resultado.getColumnIndex("nombre")));
-                        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, resultado.getString(resultado.getColumnIndex("fecha")));
-
-
-                        Cursor imagenCursor = null;
-                       // imageViewCollectionNuevo.
-                        if(imagenPathGuardar.equals("")){}
-                        else{
-                            //Log.i("entra a insertar","imagen +******");
-                            System.out.println("Parametro antes de enviar imagenPathGuardar >=>"+ imagenPathGuardar.toString());
-                            sql = "insert into Imagen(imgPath) values('" + imagenPathGuardar + "');";
+                            //inserto
                             db.execSQL(sql);
-                            sql = "select * from Imagen where idImagen = (select max(idImagen) from Imagen);";
-                            imagenCursor = db.rawQuery(sql, null);
-                            imagenCursor.moveToFirst();
-                            Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")));
-                            //Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
+                            Cursor resultado;
+                            sql = "select * from Collection where idCollection = (select max(idCollection) FROM Collection);";
+                            resultado = db.rawQuery(sql, null);
+                            resultado.moveToFirst();
+                            int cant = resultado.getCount();
+                            Log.i("Numero de elementos", String.valueOf(cant));
+                            Log.i("MyCollection", resultado.getString(resultado.getColumnIndex("idCollection")));
+                            Log.i("MyCollection", resultado.getString(resultado.getColumnIndex("nombre")));
+                            Log.i(MyCollectionUtil.TAG_MY_COLLECTION, resultado.getString(resultado.getColumnIndex("fecha")));
 
-                            sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values("+ resultado.getString(resultado.getColumnIndex("idCollection"))
-                                    +","+imagenCursor.getString(imagenCursor.getColumnIndex("idImagen"))+",'"+resultado.getString(resultado.getColumnIndex("fecha"))+"');";
 
-                            db.execSQL(sql);
+                            Cursor imagenCursor = null;
+                            // imageViewCollectionNuevo.
+                            if (imagenPathGuardar.equals("")) {
+                            } else {
+                                //Log.i("entra a insertar","imagen +******");
+                                System.out.println("Parametro antes de enviar imagenPathGuardar >=>" + imagenPathGuardar.toString());
+                                sql = "insert into Imagen(imgPath) values('" + imagenPathGuardar + "');";
+                                db.execSQL(sql);
+                                sql = "select * from Imagen where idImagen = (select max(idImagen) from Imagen);";
+                                imagenCursor = db.rawQuery(sql, null);
+                                imagenCursor.moveToFirst();
+                                Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")));
+                                //Log.i(MyCollectionUtil.TAG_MY_COLLECTION, imagenCursor.getString(imagenCursor.getColumnIndex("imgPath")));
 
+                                sql = "insert into CollectionImagen(idCollection, idImagen, fecha) values(" + resultado.getString(resultado.getColumnIndex("idCollection"))
+                                        + "," + imagenCursor.getString(imagenCursor.getColumnIndex("idImagen")) + ",'" + resultado.getString(resultado.getColumnIndex("fecha")) + "');";
+
+                                db.execSQL(sql);
+
+                            }
+
+
+                            resultado.close();
+                            imagenCursor.close();
+                            Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
+
+
+                            //Borro los campos
+                            editTextNombreCollection.setText("");
+                            editTextFechaCollection.setText("");
+                            Intent intentVolverMain = new Intent(Collection_main.this, MainActivity.class);
+                            startActivity(intentVolverMain);
                         }
+                    } else //edit
+                    {
 
+                        Toast.makeText(Collection_main.this, "Edito", Toast.LENGTH_SHORT).show();
 
-
-                        resultado.close();
-                        imagenCursor.close();
-                        Toast.makeText(Collection_main.this, "Registro insertado. . .", Toast.LENGTH_SHORT).show();
-
-
-
-
-                        //Borro los campos
-                        editTextNombreCollection.setText("");
-                        editTextFechaCollection.setText("");
-                        Intent intentVolverMain = new Intent(Collection_main.this, MainActivity.class);
-                        startActivity(intentVolverMain);
                     }
                 }
-            }
-        });
+            }});
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -380,6 +392,11 @@ public class Collection_main extends AppCompatActivity {
         }else{
             showExplanation();
         }
+    }
+
+    public void mostrarFecha(){
+        SimpleDateFormat formatea = new SimpleDateFormat("dd/MM/yyyy");
+        editTextFechaCollection.setText(formatea.format(new Date()));
     }
 
 }

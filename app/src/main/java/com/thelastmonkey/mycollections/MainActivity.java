@@ -119,9 +119,6 @@ public class MainActivity extends AppCompatActivity
                 bundleEditar.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION, txtNombreCollection.getText().toString());
                 bundleEditar.putString(MyCollectionConstant.PARAMETRO_PATH_IMAGEN, txtPathImagen.getText().toString());
 
-                //bundleEditar.putString("nombre_coleccion",spinnerCollections.getOnItemSelectedListener().toString());
-                //bundleEditar.putString("path_imagen",);
-
                 //Añado la información al intent
                 intent.putExtras(bundleEditar);
 
