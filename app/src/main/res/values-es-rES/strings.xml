@@ -12,4 +12,7 @@
     <string name="agregarimagen">Agregar Imagen</string>
     <string name="guardarcoleccion">Guardar Colección</string>
     <string name="editar">Editar</string>
+    <string name="coleccion">Colección:</string>
+    <string name="title_activity_listado_figuras">Listado de Figuras</string>
+    <string name="agregarfigura">Agregar figura</string>
 </resources>

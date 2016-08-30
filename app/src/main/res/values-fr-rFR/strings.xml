@@ -12,4 +12,7 @@
     <string name="agregarimagen">Upload Image</string>
     <string name="guardarcoleccion">Save Collection</string>
     <string name="editar">Edit</string>
+    <string name="coleccion">Collection</string>
+    <string name="title_activity_listado_figuras">List of Figures</string>
+    <string name="agregarfigura">Insert</string>
 </resources>

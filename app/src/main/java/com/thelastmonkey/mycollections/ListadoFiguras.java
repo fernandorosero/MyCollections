@@ -6,13 +6,37 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class ListadoFiguras extends AppCompatActivity {
+
+    TextView txtNombreColeccionFiguras;
+    ListView listViewFiguras;
+    Button btnAgregarFigura;
+    Button btnEditarFigura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_figuras);
+
+        txtNombreColeccionFiguras = (TextView)findViewById(R.id.txtNombreCollectionFiguras);
+        listViewFiguras = (ListView)findViewById(R.id.listViewFiguras);
+        btnAgregarFigura = (Button)findViewById(R.id.btnAgregarFigura);
+        btnEditarFigura = (Button)findViewById(R.id.btnEditar);
+
+
+
+
+
+
+
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -98,6 +98,14 @@ public class MainActivity extends AppCompatActivity
             listaColecciones.add(colection.getName());
         }
 */
+        imageViewCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentListadoFiguras = new Intent(MainActivity.this, ListadoFiguras.class);
+                startActivity(intentListadoFiguras);
+            }
+        });
+
         btnAgregarColeccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
