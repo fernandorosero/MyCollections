@@ -31,6 +31,10 @@
         <activity
             android:name=".ListadoFiguras"
             android:label="@string/title_activity_listado_figuras"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AgregarFigura"
+            android:label="@string/title_activity_agregar_figura"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

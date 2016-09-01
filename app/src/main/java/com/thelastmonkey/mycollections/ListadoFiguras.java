@@ -1,5 +1,6 @@
 package com.thelastmonkey.mycollections;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,13 @@ public class ListadoFiguras extends AppCompatActivity {
         btnEditarFigura = (Button)findViewById(R.id.btnEditar);
 
 
+        btnAgregarFigura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentAgregarFigura = new Intent(ListadoFiguras.this, AgregarFigura.class);
+                startActivity(intentAgregarFigura);
+            }
+        });
 
 
 

@@ -15,4 +15,11 @@
     <string name="coleccion">Collection</string>
     <string name="title_activity_listado_figuras">List of Figures</string>
     <string name="agregarfigura">Insert</string>
+    <string name="fechacompra">Date buy</string>
+    <string name="title_activity_agregar_figura">Agregar Figura</string>
+    <string name="preciocompra">Buy</string>
+    <string name="precioventa">Sale buy</string>
+    <string name="imagenes">Image</string>
+    <string name="confirmaventa">Is sale</string>
+    <string name="guardarfigura">Save</string>
 </resources>
