@@ -24,7 +24,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="25dp"
             android:text="@string/coleccion"
-            android:id="@+id/txtNombreCollectionAgregarFigura" />
+            android:id="@+id/txtNombreCollectionAgregarFiguraTitulo" />
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/nombre"
-            android:id="@+id/txtNombreColecctionAgregarFigura"
+            android:id="@+id/txtNombreAgregarFigura"
             android:layout_marginTop="15dp"/>
 
         <EditText
@@ -131,11 +131,12 @@
             <ImageView
                 android:layout_width="85dp"
                 android:layout_height="85dp"
-                android:id="@+id/imageViewTress"
+                android:id="@+id/imageViewTres"
                 android:src="@drawable/ic_menu_gallery"/>
         </LinearLayout>
 
         <Button
+            android:id="@+id/btnAgregarFigura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/guardarfigura"

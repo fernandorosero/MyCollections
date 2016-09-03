@@ -102,6 +102,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intentListadoFiguras = new Intent(MainActivity.this, ListadoFiguras.class);
+                //Información para enviar a Listado de Figuras
+                Bundle bundleListadoFiguras = new Bundle();
+                bundleListadoFiguras.putString(MyCollectionConstant.PARAMETRO_ID_COLLECTION, txtIdCollection.getText().toString());
+                bundleListadoFiguras.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION,txtNombreCollection.getText().toString());
+
+                intentListadoFiguras.putExtras(bundleListadoFiguras);
+
                 startActivity(intentListadoFiguras);
             }
         });

@@ -103,7 +103,7 @@ public class Collection_main extends AppCompatActivity {
         //Flecha en el menú para ir hacia atrás
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mostrarFecha();
+        editTextFechaCollection.setText(MyCollectionUtil.mostrarFecha());
 
         //Recojo los datos enviados
         try {
@@ -394,9 +394,6 @@ public class Collection_main extends AppCompatActivity {
         }
     }
 
-    public void mostrarFecha(){
-        SimpleDateFormat formatea = new SimpleDateFormat("dd/MM/yyyy");
-        editTextFechaCollection.setText(formatea.format(new Date()));
-    }
+
 
 }

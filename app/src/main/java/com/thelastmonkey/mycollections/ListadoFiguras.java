@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.thelastmonkey.mycollections.util.MyCollectionConstant;
+
 public class ListadoFiguras extends AppCompatActivity {
 
     TextView txtNombreColeccionFiguras;
@@ -28,11 +30,25 @@ public class ListadoFiguras extends AppCompatActivity {
         btnAgregarFigura = (Button)findViewById(R.id.btnAgregarFigura);
         btnEditarFigura = (Button)findViewById(R.id.btnEditar);
 
+        //Recojo los datos recibidos al layout
+        final Bundle bundle = getIntent().getExtras();
+        txtNombreColeccionFiguras.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
         btnAgregarFigura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentAgregarFigura = new Intent(ListadoFiguras.this, AgregarFigura.class);
+
+                //Datos a enviar al layout AgregarFigura
+                Bundle bundleAgregarFigura = new Bundle();
+
+                //Cargo los parámetros a enviar
+                bundleAgregarFigura.putString(MyCollectionConstant.PARAMETRO_ID_COLLECTION, bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION));
+                bundleAgregarFigura.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION, bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
+
+                //Cargo al intent los parámetros
+                intentAgregarFigura.putExtras(bundleAgregarFigura);
+
                 startActivity(intentAgregarFigura);
             }
         });

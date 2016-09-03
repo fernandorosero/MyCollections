@@ -2,8 +2,10 @@ package com.thelastmonkey.mycollections;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
+import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 /**
  * Created by tatof on 14/08/2016.
@@ -70,6 +72,11 @@ public class DBAdapter {
 
 
 
+    public static void createFiguraCollection(String nombre, String fechaCompra, int precioCompra, int precioVenta, int venta){
+
+        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, "nombre:" + nombre + " FechaCompra:" + fechaCompra + " precio compra: " + precioCompra +  " precio venta: " + precioVenta + " venta: " + venta);
+
+    }
 
 
 }
