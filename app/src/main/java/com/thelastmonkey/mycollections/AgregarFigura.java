@@ -66,7 +66,8 @@ public class AgregarFigura extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i(MyCollectionUtil.TAG_MY_COLLECTION,"AGREGO FIGURA");
 
-                DBAdapter.createFiguraCollection(editTextNombreAgregarFigura.getText().toString(),
+                MyCollectionUtil.createFiguraCollection(AgregarFigura.this,
+                                                editTextNombreAgregarFigura.getText().toString(),
                                                 editTextFechaCompra.getText().toString(),
                                                 Integer.parseInt(editTextPrecioCompra.getText().toString()),
                                                 Integer.parseInt(editTextPrecioVenta.getText().toString()),

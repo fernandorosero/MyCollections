@@ -63,20 +63,11 @@ public class DBAdapter {
     private final Context context;
 
     private DatabaseMyCollections databaseMyCollections;
-    private SQLiteDatabase sqLiteDatabase;
+    private  static SQLiteDatabase sqLiteDatabase;
 
     public DBAdapter(Context context) {
         this.context = context;
         //databaseMyCollections = new DatabaseMyCollections(context);
     }
-
-
-
-    public static void createFiguraCollection(String nombre, String fechaCompra, int precioCompra, int precioVenta, int venta){
-
-        Log.i(MyCollectionUtil.TAG_MY_COLLECTION, "nombre:" + nombre + " FechaCompra:" + fechaCompra + " precio compra: " + precioCompra +  " precio venta: " + precioVenta + " venta: " + venta);
-
-    }
-
 
 }
