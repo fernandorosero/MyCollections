@@ -49,7 +49,7 @@ public class AgregarFigura extends AppCompatActivity {
 
 
         //Recojo los datos recibidos a la vista
-        Bundle bundle = getIntent().getExtras();
+        final Bundle bundle = getIntent().getExtras();
         txtNombreCollectionAgregarFiguraTitulo.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -67,6 +67,7 @@ public class AgregarFigura extends AppCompatActivity {
                 Log.i(MyCollectionUtil.TAG_MY_COLLECTION,"AGREGO FIGURA");
 
                 MyCollectionUtil.createFiguraCollection(AgregarFigura.this,
+                                                bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION),
                                                 editTextNombreAgregarFigura.getText().toString(),
                                                 editTextFechaCompra.getText().toString(),
                                                 Integer.parseInt(editTextPrecioCompra.getText().toString()),
