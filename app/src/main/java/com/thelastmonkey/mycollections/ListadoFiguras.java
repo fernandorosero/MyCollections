@@ -34,6 +34,8 @@ public class ListadoFiguras extends AppCompatActivity {
         final Bundle bundle = getIntent().getExtras();
         txtNombreColeccionFiguras.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
+
+
         btnAgregarFigura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
