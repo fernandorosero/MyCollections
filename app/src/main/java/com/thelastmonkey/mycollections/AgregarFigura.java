@@ -1,5 +1,6 @@
 package com.thelastmonkey.mycollections;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -52,6 +53,8 @@ public class AgregarFigura extends AppCompatActivity {
         final Bundle bundle = getIntent().getExtras();
         txtNombreCollectionAgregarFiguraTitulo.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
+        editTextFechaCompra.setText(MyCollectionUtil.mostrarFecha());
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +77,7 @@ public class AgregarFigura extends AppCompatActivity {
                                                 Integer.parseInt(editTextPrecioVenta.getText().toString()),
                                                 1);
 
-
-
+                onBackPressed();
 
             }
         });

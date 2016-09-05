@@ -9,7 +9,9 @@ import com.thelastmonkey.mycollections.DBAdapter;
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tatof on 16/08/2016.
@@ -25,6 +27,58 @@ public class MyCollectionUtil {
         return fechaFormateada;
     }
 
+    public static List<String> listadoCollectionFigura(Context contexto,String idCollection){
+
+        String sentenciaSQL;
+        sentenciaSQL = "select * from CollectionFigura where idCollection='"+idCollection+"'";
+
+        Cursor cursorlistFigurasPorColeccion;
+        List<String> listadoIdFigura = new ArrayList<String>();
+
+        //Conecto a la BBDD
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre, null, DBAdapter.BBDD_VERSION);
+        //Acceso escritura
+        db = db_myCollection.getWritableDatabase();
+
+        if(db != null){
+            cursorlistFigurasPorColeccion = db.rawQuery(sentenciaSQL, null);
+            cursorlistFigurasPorColeccion.moveToFirst();
+
+            Log.i("numero de elementos:",String.valueOf(cursorlistFigurasPorColeccion.getCount()));
+
+            for(int i=0; i<cursorlistFigurasPorColeccion.getCount(); i++){
+                listadoIdFigura.add(cursorlistFigurasPorColeccion.getString(cursorlistFigurasPorColeccion.getColumnIndex("idFigura")));
+                cursorlistFigurasPorColeccion.moveToNext();
+            }
+
+            cursorlistFigurasPorColeccion.close();
+        }
+
+        return listadoIdFigura;
+    }
+
+    public static List<String> returnNombresFiguras(Context contexto, List<String> idFiguras){
+        List<String> listaNombresFiguras = new ArrayList<>();
+        Cursor cursorNombreFigura = null;
+        String sentenciaSQL;
+        String idfigura="";
+        sentenciaSQL = "select * from Figura where idFigura=";
+        //Conecto a la BBDD
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre, null, DBAdapter.BBDD_VERSION);
+        //Acceso escritura
+        db = db_myCollection.getWritableDatabase();
+        if(db != null){
+            for(int i=0; i<idFiguras.size(); i++) {
+                idfigura = "'"+idFiguras.get(i)+"'";
+                cursorNombreFigura = db.rawQuery(sentenciaSQL + idfigura, null);
+                cursorNombreFigura.moveToFirst();
+                listaNombresFiguras.add(cursorNombreFigura.getString(cursorNombreFigura.getColumnIndex("nombre")));
+            }
+
+            //cursorNombreFigura.close();
+        }
+        return listaNombresFiguras;
+    }
     public static  void createFiguraCollection(Context contexto,String idCollection,String nombre, String fechaCompra, int precioCompra, int precioVenta, int venta){
 
         String sentenciaSQL;
@@ -64,4 +118,5 @@ public class MyCollectionUtil {
         db.close();
         db_myCollection.close();
     }
+
 }
