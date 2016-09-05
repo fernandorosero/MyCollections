@@ -80,7 +80,7 @@ public class MyCollectionUtil {
         return listaNombresFiguras;
     }
     public static  void createFiguraCollection(Context contexto,String idCollection,String nombre, String fechaCompra, int precioCompra, int precioVenta, int venta){
-
+        Log.i("VEnta++++++", String.valueOf(venta));
         String sentenciaSQL;
         sentenciaSQL = "insert into Figura(nombre, fechaCompra, precioCompra, precioVenta, venta) values('"+nombre+"', '"+fechaCompra+"', '"+precioCompra+"', '"+precioVenta+"', + '"+venta+"')";
         //Conecto con la bbdd

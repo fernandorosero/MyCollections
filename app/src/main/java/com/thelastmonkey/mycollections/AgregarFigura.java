@@ -71,6 +71,10 @@ public class AgregarFigura extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i(MyCollectionUtil.TAG_MY_COLLECTION,"AGREGO FIGURA");
+                int codigoVenta = 0;
+                if (checkBoxFiguraVenta.isChecked()){
+                    codigoVenta = 1;
+                }
 
                 MyCollectionUtil.createFiguraCollection(AgregarFigura.this,
                                                 bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION),
@@ -78,7 +82,7 @@ public class AgregarFigura extends AppCompatActivity {
                                                 editTextFechaCompra.getText().toString(),
                                                 Integer.parseInt(editTextPrecioCompra.getText().toString()),
                                                 Integer.parseInt(editTextPrecioVenta.getText().toString()),
-                                                1);
+                                                codigoVenta);
 
                 onBackPressed();
 
