@@ -19,6 +19,7 @@ import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
 public class AgregarFigura extends AppCompatActivity {
 
+    private static final String CERO = "0";
     TextView txtNombreCollectionAgregarFiguraTitulo;
     EditText editTextNombreAgregarFigura;
     EditText editTextFechaCompra;
@@ -54,6 +55,8 @@ public class AgregarFigura extends AppCompatActivity {
         txtNombreCollectionAgregarFiguraTitulo.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
         editTextFechaCompra.setText(MyCollectionUtil.mostrarFecha());
+        editTextPrecioCompra.setText(CERO);
+        editTextPrecioVenta.setText(CERO);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

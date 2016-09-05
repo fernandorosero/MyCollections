@@ -22,7 +22,6 @@ public class ListadoFiguras extends AppCompatActivity {
     TextView txtNombreColeccionFiguras;
     ListView listViewFiguras;
     Button btnAgregarFigura;
-    Button btnEditarFigura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,6 @@ public class ListadoFiguras extends AppCompatActivity {
         txtNombreColeccionFiguras = (TextView)findViewById(R.id.txtNombreCollectionFiguras);
         listViewFiguras = (ListView)findViewById(R.id.listViewFiguras);
         btnAgregarFigura = (Button)findViewById(R.id.btnAgregarFigura);
-        btnEditarFigura = (Button)findViewById(R.id.btnEditar);
 
         //Recojo los datos recibidos al layout
         final Bundle bundle = getIntent().getExtras();
