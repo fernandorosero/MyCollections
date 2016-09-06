@@ -40,12 +40,14 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/nombre"
                 android:id="@+id/txtNombreAgregarFigura"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="10dp"
+                android:elegantTextHeight="true"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextNombreAgregarFigura" />
+                android:id="@+id/editTextNombreAgregarFigura"
+                android:layout_marginTop="7dp"/>
                 </TableRow>
                 <TableRow>
             <TextView
@@ -54,14 +56,15 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/fechacompra"
                 android:id="@+id/txtFechaCompraAgregarFigura"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="10dp"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
-                android:id="@+id/editTextFechaCompraAgregarFigura" />
+                android:id="@+id/editTextFechaCompraAgregarFigura"
+                android:layout_marginTop="7dp"/>
                 </TableRow>
 
                 <TableRow
@@ -73,13 +76,14 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/preciocompra"
                         android:id="@+id/txtPrecioCompra"
-                        android:layout_marginTop="15dp"/>
+                        android:layout_marginTop="10dp"/>
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:ems="10"
-                        android:id="@+id/editTextPrecioCompra" />
+                        android:id="@+id/editTextPrecioCompra"
+                        android:layout_marginTop="7dp"/>
                 </TableRow>
 
                 <TableRow>
@@ -89,13 +93,14 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="@string/precioventa"
                         android:id="@+id/txtPrecioVenat"
-                        android:layout_marginTop="15dp"/>
+                        android:layout_marginTop="10dp"/>
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:ems="10"
-                        android:id="@+id/editTextPrecioVenta" />
+                        android:id="@+id/editTextPrecioVenta"
+                        android:layout_marginTop="7dp"/>
                 </TableRow>
             </TableLayout>
 
@@ -104,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/confirmaventa"
                 android:id="@+id/checkBoxConfirmaVenta"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:textSize="25dp"/>
 
             <TextView
@@ -119,7 +124,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="10dp"
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="85dp"
@@ -145,7 +151,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/guardarfigura"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </ScrollView>
 

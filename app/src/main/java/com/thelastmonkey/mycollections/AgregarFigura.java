@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
+import java.util.List;
+
 public class AgregarFigura extends AppCompatActivity {
 
     private static final String CERO = "0";
@@ -31,6 +33,7 @@ public class AgregarFigura extends AppCompatActivity {
     ImageView imageViewTres;
     Button btnAgregarFigura;
 
+    List<String> pathImagenesAgregadas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,24 @@ public class AgregarFigura extends AppCompatActivity {
             }
         });
 
+        imageViewUno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("*****","uno");
+            }
+        });
+        imageViewDos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("********","dos");
+            }
+        });
+        imageViewTres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("+++++","tres");
+            }
+        });
         btnAgregarFigura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
