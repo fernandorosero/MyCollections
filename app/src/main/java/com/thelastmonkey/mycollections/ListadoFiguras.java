@@ -7,10 +7,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
@@ -37,6 +39,16 @@ public class ListadoFiguras extends AppCompatActivity {
         txtNombreColeccionFiguras.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
         cargarListViewFiguras(bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION));
+
+        listViewFiguras.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Toast.makeText(ListadoFiguras.this, "Has seleccionado: " + listadoNombreFiguras.get(position) +
+                        " id: " + listadoIdFiguras.get(position),
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         btnAgregarFigura.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +89,12 @@ public class ListadoFiguras extends AppCompatActivity {
             }
         });
     }
-
+    List<String>listadoIdFiguras;
+    List<String>listadoNombreFiguras;
     public void cargarListViewFiguras(String idCollection){
         //Listado de las figuras de la coleccion
-        List<String>listadoIdFiguras =  MyCollectionUtil.listadoCollectionFigura(ListadoFiguras.this, idCollection);
-        List<String>listadoNombreFiguras = MyCollectionUtil.returnNombresFiguras(ListadoFiguras.this,listadoIdFiguras);
+        listadoIdFiguras =  MyCollectionUtil.listadoCollectionFigura(ListadoFiguras.this, idCollection);
+        listadoNombreFiguras = MyCollectionUtil.returnNombresFiguras(ListadoFiguras.this,listadoIdFiguras);
         ArrayAdapter<String> adaptadorIdFiguras = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listadoNombreFiguras);
         listViewFiguras.setAdapter(adaptadorIdFiguras);
 
