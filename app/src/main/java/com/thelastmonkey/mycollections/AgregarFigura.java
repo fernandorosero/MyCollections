@@ -1,9 +1,22 @@
 package com.thelastmonkey.mycollections;
 
+import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,12 +25,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class AgregarFigura extends AppCompatActivity {
 
@@ -33,7 +53,17 @@ public class AgregarFigura extends AppCompatActivity {
     ImageView imageViewTres;
     Button btnAgregarFigura;
 
-    List<String> pathImagenesAgregadas;
+    private final int UNO = 1;
+    private final int DOS = 2;
+    private final int TRES = 3;
+
+    int imagenSeleccionadaGlobal;
+
+    private LinearLayout mRlView;
+    private String mPath;
+
+    List<String> pathImagenesAgregadas = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,19 +103,31 @@ public class AgregarFigura extends AppCompatActivity {
         imageViewUno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("*****","uno");
+                if(mayRequestStoragePermission()) {
+                    Log.i("*****", "uno");
+                    showOptions(UNO);
+                }
             }
         });
         imageViewDos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("********","dos");
+
+                if(mayRequestStoragePermission())
+                {
+                    Log.i("********","dos");
+                    Log.i("SI", "Si tiene permiso goooo");
+                    showOptions(DOS);
+                }
             }
         });
         imageViewTres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("+++++","tres");
+                if(mayRequestStoragePermission()) {
+                    Log.i("+++++", "tres");
+                    showOptions(TRES);
+                }
             }
         });
         btnAgregarFigura.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +139,7 @@ public class AgregarFigura extends AppCompatActivity {
                     codigoVenta = 1;
                 }
 
+                String idFigura =
                 MyCollectionUtil.createFiguraCollection(AgregarFigura.this,
                                                 bundle.getString(MyCollectionConstant.PARAMETRO_ID_COLLECTION),
                                                 editTextNombreAgregarFigura.getText().toString(),
@@ -105,10 +148,196 @@ public class AgregarFigura extends AppCompatActivity {
                                                 Integer.parseInt(editTextPrecioVenta.getText().toString()),
                                                 codigoVenta);
 
+                MyCollectionUtil.createImagenDeFiguras(AgregarFigura.this,pathImagenesAgregadas,idFigura);
+
                 onBackPressed();
 
             }
         });
     }
+
+    /************INICIO CODIGO PARA AGREGAR IMAGENES A FIGURA ****************/
+    private boolean mayRequestStoragePermission() {
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return true;
+
+        if((checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
+                (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED))
+            return true;
+
+        if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
+            Snackbar.make(mRlView, "Los permisos son necesarios para poder usar la aplicación",
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MyCollectionConstant.MY_PERMISSIONS);
+                }
+            });
+        }else{
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MyCollectionConstant.MY_PERMISSIONS);
+        }
+
+        return false;
+    }
+    private void showOptions(int imagenSleccionada) {
+
+        imagenSeleccionadaGlobal = imagenSleccionada;
+
+        final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(AgregarFigura.this);
+        builder.setTitle("Elige una opción");
+        builder.setItems(option, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(option[which] == "Tomar foto"){
+                    openCamera();
+                }else if(option[which] == "Elegir de galeria"){
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), MyCollectionConstant.SELECT_PICTURE);
+                }else {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        builder.show();
+    }
+    private void openCamera() {
+        File file = new File(Environment.getExternalStorageDirectory(), MyCollectionConstant.MEDIA_DIRECTORY);
+        boolean isDirectoryCreated = file.exists();
+
+        if(!isDirectoryCreated)
+            isDirectoryCreated = file.mkdirs();
+
+        if(isDirectoryCreated){
+            Long timestamp = System.currentTimeMillis() / 1000;
+            String imageName = timestamp.toString() + ".jpg";
+
+            mPath = Environment.getExternalStorageDirectory() + File.separator + MyCollectionConstant.MEDIA_DIRECTORY
+                    + File.separator + imageName;
+            Log.i(" Es el mPath:",mPath);
+            File newFile = new File(mPath);
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            startActivityForResult(intent, MyCollectionConstant.PHOTO_CODE);
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("file_path", mPath);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mPath = savedInstanceState.getString("file_path");
+        Log.i(" Es el mPath:",mPath);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case MyCollectionConstant.PHOTO_CODE:
+                    MediaScannerConnection.scanFile(this,
+                            new String[]{mPath}, null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                @Override
+                                public void onScanCompleted(String path, Uri uri) {
+                                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                                    if(imagenSeleccionadaGlobal==UNO){
+                                        pathImagenesAgregadas.add(UNO,path);
+                                    }else if(imagenSeleccionadaGlobal==DOS){
+                                        pathImagenesAgregadas.add(DOS,path);
+                                    }else if(imagenSeleccionadaGlobal==TRES){
+                                        pathImagenesAgregadas.add(TRES,path);
+                                    }
+
+                                    //imagenPathGuardar = path;
+                                    Log.i("ExternalStorage", "-> Uri = " + uri);
+                                }
+                            });
+
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
+
+                    if(imagenSeleccionadaGlobal==UNO){
+                        imageViewUno.setImageBitmap(bitmap);
+                    }else if(imagenSeleccionadaGlobal==DOS){
+                        imageViewDos.setImageBitmap(bitmap);
+                    }else if(imagenSeleccionadaGlobal==TRES){
+                        imageViewTres.setImageBitmap(bitmap);
+                    }
+                    //imageViewCollectionNuevo.setImageBitmap(bitmap);
+                    break;
+                case MyCollectionConstant.SELECT_PICTURE:
+                    Uri path = data.getData();
+                    Log.i("path galeria ok: " , String.valueOf(data.getData()));
+                    if(imagenSeleccionadaGlobal==UNO){
+                        pathImagenesAgregadas.add(0,String.valueOf(data.getData()));
+                        imageViewUno.setImageURI(path);
+                    }else if(imagenSeleccionadaGlobal==DOS){
+                        pathImagenesAgregadas.add(1,String.valueOf(data.getData()));
+                        imageViewDos.setImageURI(path);
+                    }else if(imagenSeleccionadaGlobal==TRES){
+                        pathImagenesAgregadas.add(2,String.valueOf(data.getData()));
+                        imageViewTres.setImageURI(path);
+                    }
+
+                   // imagenPathGuardar = String.valueOf(data.getData());
+                   // imageViewCollectionNuevo.setImageURI(path);
+                    break;
+
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == MyCollectionConstant.MY_PERMISSIONS){
+            if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(AgregarFigura.this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
+                //btnAgregarImagen.setEnabled(true);
+            }
+        }else{
+            showExplanation();
+        }
+    }
+    private void showExplanation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AgregarFigura.this);
+        builder.setTitle("Permisos denegados");
+        builder.setMessage("Para usar las funciones de la app necesitas aceptar los permisos");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        builder.show();
+    }
+    /************FIN CODIGO PARA AGREGAR IMAGENES A FIGURA ****************/
+
 
 }

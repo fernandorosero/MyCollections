@@ -79,8 +79,9 @@ public class MyCollectionUtil {
         }
         return listaNombresFiguras;
     }
-    public static  void createFiguraCollection(Context contexto,String idCollection,String nombre, String fechaCompra, int precioCompra, int precioVenta, int venta){
+    public static  String createFiguraCollection(Context contexto,String idCollection,String nombre, String fechaCompra, int precioCompra, int precioVenta, int venta){
         String sentenciaSQL;
+        String idFigura;
         sentenciaSQL = "insert into Figura(nombre, fechaCompra, precioCompra, precioVenta, venta) values('"+nombre+"', '"+fechaCompra+"', '"+precioCompra+"', '"+precioVenta+"', + '"+venta+"')";
         //Conecto con la bbdd
         DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
@@ -96,11 +97,14 @@ public class MyCollectionUtil {
             cursorAgregarFigura = db.rawQuery(sentenciaSQL,null);
             cursorAgregarFigura.moveToFirst();
             idFiguraCreado = cursorAgregarFigura.getString(cursorAgregarFigura.getColumnIndex("idFigura"));
+            idFigura = idFiguraCreado;
             cursorAgregarFigura.close();
             createCollectionFigura(contexto, idCollection,idFiguraCreado);
+            return idFiguraCreado;
         }
         db.close();
         db_myCollection.close();
+        return null;
     }
 
     public static void createCollectionFigura(Context contexto,String idCollection, String idFigura) {
@@ -117,5 +121,39 @@ public class MyCollectionUtil {
         db.close();
         db_myCollection.close();
     }
+
+
+    public static void createImagenDeFiguras(Context contexto, List<String> pathFiguras, String idFigura){
+
+        String sentenciaSQL;
+        sentenciaSQL = "";
+        //Conecto a la bbdd
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre, null, DBAdapter.BBDD_VERSION);
+        //Acceso de escritura
+        db = db_myCollection.getWritableDatabase();
+        //Compruebo si existe
+        if (db != null) {
+
+            for (int i = 0; i < pathFiguras.size(); i++) {
+                sentenciaSQL = "insert into FiguraImagen(idFigura,idImagen,fecha) values('"+idFigura+"','"+createImagen(pathFiguras.get(i).toString(),db)+"','"+MyCollectionUtil.mostrarFecha()+"');";
+            }
+        }
+
+    }
+
+    public static String createImagen(String pathImagen, SQLiteDatabase db){
+        String idImagen="";
+        String sentenciaSQL;
+        Cursor cursorAgregarImagen;
+        sentenciaSQL = "insert into Imagen(imgPath) values('"+pathImagen+"');";
+        db.execSQL(sentenciaSQL);
+        sentenciaSQL = "select * from Imagen where idImagen = (select max(idImagen) FROM Imagen);";
+        cursorAgregarImagen = db.rawQuery(sentenciaSQL,null);
+        cursorAgregarImagen.moveToFirst();
+        idImagen = cursorAgregarImagen.getString(cursorAgregarImagen.getColumnIndex("idImagen"));
+        cursorAgregarImagen.close();
+        return idImagen;
+    }
+
 
 }

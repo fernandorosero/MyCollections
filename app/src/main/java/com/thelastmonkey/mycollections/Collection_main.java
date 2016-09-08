@@ -51,13 +51,14 @@ public class Collection_main extends AppCompatActivity {
     private static final String EDITAR = "Editar: ";
     private static final String CERO = "0";
     //DECLARO CONSTANTES PARA GUARDAR LAS IMAGENES
+    /*
     private static  String APP_DIRECTORY = "MyPictureAppColecction/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
     private final int MY_PERMISSIONS = 100;
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
-
+*/
     TextView txtIdCollectionEdit;
     TextView txtNombreCollectionEdit;
     TextView txtPathImagenEdit;
@@ -254,11 +255,11 @@ public class Collection_main extends AppCompatActivity {
                 @TargetApi(Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MyCollectionConstant.MY_PERMISSIONS);
                 }
             });
         }else{
-            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MyCollectionConstant.MY_PERMISSIONS);
         }
 
         return false;
@@ -301,7 +302,7 @@ public class Collection_main extends AppCompatActivity {
                 }else if(option[which] == "Elegir de galeria"){
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
+                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), MyCollectionConstant.SELECT_PICTURE);
                 }else {
                     dialog.dismiss();
                 }
@@ -312,7 +313,7 @@ public class Collection_main extends AppCompatActivity {
     }
 
     private void openCamera() {
-        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        File file = new File(Environment.getExternalStorageDirectory(), MyCollectionConstant.MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
         if(!isDirectoryCreated)
@@ -322,14 +323,14 @@ public class Collection_main extends AppCompatActivity {
             Long timestamp = System.currentTimeMillis() / 1000;
             String imageName = timestamp.toString() + ".jpg";
 
-            mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
+            mPath = Environment.getExternalStorageDirectory() + File.separator + MyCollectionConstant.MEDIA_DIRECTORY
                     + File.separator + imageName;
             Log.i(" Es el mPath:",mPath);
             File newFile = new File(mPath);
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            startActivityForResult(intent, PHOTO_CODE);
+            startActivityForResult(intent, MyCollectionConstant.PHOTO_CODE);
         }
     }
 
@@ -353,7 +354,7 @@ public class Collection_main extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             switch (requestCode){
-                case PHOTO_CODE:
+                case MyCollectionConstant.PHOTO_CODE:
                     MediaScannerConnection.scanFile(this,
                             new String[]{mPath}, null,
                             new MediaScannerConnection.OnScanCompletedListener() {
@@ -369,7 +370,7 @@ public class Collection_main extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
                     imageViewCollectionNuevo.setImageBitmap(bitmap);
                     break;
-                case SELECT_PICTURE:
+                case MyCollectionConstant.SELECT_PICTURE:
                     Uri path = data.getData();
                     Log.i("path galeria ok: " , String.valueOf(data.getData()));
                     imagenPathGuardar = String.valueOf(data.getData());
@@ -384,7 +385,7 @@ public class Collection_main extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == MY_PERMISSIONS){
+        if(requestCode == MyCollectionConstant.MY_PERMISSIONS){
             if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(Collection_main.this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
                 btnAgregarImagen.setEnabled(true);

@@ -101,15 +101,22 @@ public class MainActivity extends AppCompatActivity
         imageViewCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentListadoFiguras = new Intent(MainActivity.this, ListadoFiguras.class);
-                //Información para enviar a Listado de Figuras
-                Bundle bundleListadoFiguras = new Bundle();
-                bundleListadoFiguras.putString(MyCollectionConstant.PARAMETRO_ID_COLLECTION, txtIdCollection.getText().toString());
-                bundleListadoFiguras.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION,txtNombreCollection.getText().toString());
+                
+                if(spinnerCollections.getCount()>0) {
+                    Intent intentListadoFiguras = new Intent(MainActivity.this, ListadoFiguras.class);
+                    //Información para enviar a Listado de Figuras
+                    Bundle bundleListadoFiguras = new Bundle();
+                    bundleListadoFiguras.putString(MyCollectionConstant.PARAMETRO_ID_COLLECTION, txtIdCollection.getText().toString());
+                    bundleListadoFiguras.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION, txtNombreCollection.getText().toString());
 
-                intentListadoFiguras.putExtras(bundleListadoFiguras);
+                    intentListadoFiguras.putExtras(bundleListadoFiguras);
 
-                startActivity(intentListadoFiguras);
+                    startActivity(intentListadoFiguras);
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "No hay colecciones", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
