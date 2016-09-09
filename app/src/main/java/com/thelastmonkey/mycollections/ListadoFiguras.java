@@ -47,6 +47,18 @@ public class ListadoFiguras extends AppCompatActivity {
                         " id: " + listadoIdFiguras.get(position),
                         Toast.LENGTH_SHORT).show();
 
+                Intent intentEditarFigura = new Intent(ListadoFiguras.this, AgregarFigura.class);
+                //Datos a enviar al layout AgregarFigura (Editar)
+                Bundle bundleEditarAgregarFigura = new Bundle();
+                //Cargo los parámetros a enviar
+                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_ID_FIGURA, bundle.getString(listadoIdFiguras.get(position)));
+                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION, bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
+                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_EDITAR, bundle.getString(MyCollectionConstant.PARAMETRO_EDITAR));
+                //Cargo al intent los parametros
+                intentEditarFigura.putExtras(bundleEditarAgregarFigura);
+                startActivity(intentEditarFigura);
+
+
             }
         });
 

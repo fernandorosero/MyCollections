@@ -62,6 +62,8 @@ public class AgregarFigura extends AppCompatActivity {
     private LinearLayout mRlView;
     private String mPath;
 
+    String editar;
+
     List<String> pathImagenesAgregadas = new ArrayList<String>();
 
     @Override
@@ -83,8 +85,17 @@ public class AgregarFigura extends AppCompatActivity {
         btnAgregarFigura = (Button)findViewById(R.id.btnAgregarFigura);
 
 
+
         //Recojo los datos recibidos a la vista
         final Bundle bundle = getIntent().getExtras();
+
+        if(bundle.getString(MyCollectionConstant.PARAMETRO_EDITAR) != null){
+            Log.i("***********", "EDITAR");
+        }
+        else{
+            Log.i("**********", "NUEVO");
+        }
+
         txtNombreCollectionAgregarFiguraTitulo.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
         editTextFechaCompra.setText(MyCollectionUtil.mostrarFecha());
