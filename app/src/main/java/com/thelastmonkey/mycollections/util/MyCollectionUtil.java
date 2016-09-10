@@ -8,6 +8,8 @@ import android.util.Log;
 import com.thelastmonkey.mycollections.DBAdapter;
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
 import com.thelastmonkey.mycollections.dto.FiguraDTO;
+import com.thelastmonkey.mycollections.dto.FiguraImagenDTO;
+import com.thelastmonkey.mycollections.dto.ImagenDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -137,6 +139,7 @@ public class MyCollectionUtil {
 
             for (int i = 0; i < pathFiguras.size(); i++) {
                 sentenciaSQL = "insert into FiguraImagen(idFigura,idImagen,fecha) values('"+idFigura+"','"+createImagen(pathFiguras.get(i).toString(),db)+"','"+MyCollectionUtil.mostrarFecha()+"');";
+                db.execSQL(sentenciaSQL);
             }
         }
 
@@ -176,6 +179,62 @@ public class MyCollectionUtil {
             figuraDTO.setVenta(cursorGetFigura.getString(cursorGetFigura.getColumnIndex("venta")));
         }
         return  figuraDTO;
+    }
+
+    public static List<FiguraImagenDTO> listadoFiguraImagenDTO(Context contexto, String idFigura){
+        List<FiguraImagenDTO> figuraImagenDTO =  new ArrayList<FiguraImagenDTO>();
+        Log.i("idFigura",idFigura);
+        String sentenciaSQL;
+        sentenciaSQL = "select * from FiguraImagen where idFigura='"+idFigura+"';";
+        //Conecto con la bbdd
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
+        //Acceso de escritura
+        db = db_myCollection.getWritableDatabase();
+        Cursor cursorGetListFiguraImagen;
+        //Compruebo si existe la db
+        if(db != null) {
+            cursorGetListFiguraImagen = db.rawQuery(sentenciaSQL, null);
+            cursorGetListFiguraImagen.moveToFirst();
+            Log.i("cursosssss",String.valueOf(cursorGetListFiguraImagen.getCount()));
+            for(int i=0; i<cursorGetListFiguraImagen.getCount(); i++){
+                FiguraImagenDTO figImDTO = new FiguraImagenDTO();
+                figImDTO.setIdFiguraImagen(cursorGetListFiguraImagen.getString(cursorGetListFiguraImagen.getColumnIndex("idFiguraImagen")));
+                figImDTO.setIdFigura(cursorGetListFiguraImagen.getString(cursorGetListFiguraImagen.getColumnIndex("idFigura")));
+                figImDTO.setIdImagen(cursorGetListFiguraImagen.getString(cursorGetListFiguraImagen.getColumnIndex("idImagen")));
+                figImDTO.setFecha(cursorGetListFiguraImagen.getString(cursorGetListFiguraImagen.getColumnIndex("fecha")));
+                figuraImagenDTO.add(figImDTO);
+                cursorGetListFiguraImagen.moveToNext();
+            }
+        }
+
+            return  figuraImagenDTO;
+    }
+
+    public static List<ImagenDTO> listadoImagenDTO(Context contexto, List<FiguraImagenDTO> listFiguraImagenDTO){
+        List<ImagenDTO> listImagenDTO = new ArrayList<ImagenDTO>();
+        String sentenciaSQL;
+        sentenciaSQL = "select * from imagen where idImagen='";
+        //Conecto con la bbdd
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
+        //Acceso de escritura
+        db = db_myCollection.getWritableDatabase();
+        Cursor cursorGetListImagen;
+        //Compruebo si existe la db
+
+        if(db != null) {
+            for(int i = 0; i<listFiguraImagenDTO.size(); i++) {
+
+                cursorGetListImagen = db.rawQuery(sentenciaSQL + listFiguraImagenDTO.get(i).getIdImagen()+ "';", null);
+                cursorGetListImagen.moveToFirst();
+                ImagenDTO imgDTO = new ImagenDTO();
+                imgDTO.setIdImagen(cursorGetListImagen.getString(cursorGetListImagen.getColumnIndex("idImagen")));
+                imgDTO.setImgPath(cursorGetListImagen.getString(cursorGetListImagen.getColumnIndex("imgPath")));
+                listImagenDTO.add(imgDTO);
+                cursorGetListImagen.close();
+            }
+        }
+
+        return listImagenDTO;
     }
 
 }

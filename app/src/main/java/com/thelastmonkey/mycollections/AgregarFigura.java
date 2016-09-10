@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.thelastmonkey.mycollections.dto.FiguraDTO;
+import com.thelastmonkey.mycollections.dto.FiguraImagenDTO;
+import com.thelastmonkey.mycollections.dto.ImagenDTO;
 import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
@@ -119,6 +121,21 @@ public class AgregarFigura extends AppCompatActivity {
             editTextPrecioCompra.setText(figuraDTO.getPrecioCompra());
             editTextPrecioVenta.setText(figuraDTO.getPrecioVenta());
 
+            //PAra las figuras de la imagen
+            List<FiguraImagenDTO> listFiguraImagenDTO = MyCollectionUtil.listadoFiguraImagenDTO(AgregarFigura.this, bundle.getString(MyCollectionConstant.PARAMETRO_ID_FIGURA));
+            Log.i("Numero de elementos: " , String.valueOf(listFiguraImagenDTO.size()));
+            List<ImagenDTO> listImagenDTO = MyCollectionUtil.listadoImagenDTO(AgregarFigura.this,listFiguraImagenDTO);
+
+            Log.i("numero de imagenes", String.valueOf(listImagenDTO.size()));
+            if(listImagenDTO.size()>0) {
+                imageViewUno.setImageURI(Uri.parse(listImagenDTO.get(CRO).getImgPath()));
+                imageViewDos.setImageURI(Uri.parse(listImagenDTO.get(UNO).getImgPath()));
+                imageViewTres.setImageURI(Uri.parse(listImagenDTO.get(DOS).getImgPath()));
+            }
+            else
+            {
+                Toast.makeText(AgregarFigura.this, "No tiene elemntos", Toast.LENGTH_SHORT).show();
+            }
             if(figuraDTO.getVenta().equals("1")){
                 checkBoxFiguraVenta.setChecked(true);
             }
