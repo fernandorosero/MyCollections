@@ -43,7 +43,7 @@ public class ListadoFiguras extends AppCompatActivity {
         listViewFiguras.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(ListadoFiguras.this, "Has seleccionado: " + listadoNombreFiguras.get(position) +
+                Toast.makeText(ListadoFiguras.this, "Has seleccionadoss: " + listadoNombreFiguras.get(position) +
                         " id: " + listadoIdFiguras.get(position),
                         Toast.LENGTH_SHORT).show();
 
@@ -51,9 +51,11 @@ public class ListadoFiguras extends AppCompatActivity {
                 //Datos a enviar al layout AgregarFigura (Editar)
                 Bundle bundleEditarAgregarFigura = new Bundle();
                 //Cargo los parámetros a enviar
-                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_ID_FIGURA, bundle.getString(listadoIdFiguras.get(position)));
+                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_ID_FIGURA, listadoIdFiguras.get(position));
+                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_NOMBRE_FIGURA, listadoNombreFiguras.get(position));
                 bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION, bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
-                bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_EDITAR, bundle.getString(MyCollectionConstant.PARAMETRO_EDITAR));
+               // bundleEditarAgregarFigura.putString(MyCollectionConstant.PARAMETRO_EDITAR, bundle.getString(MyCollectionConstant.PARAMETRO_EDITAR));
+
                 //Cargo al intent los parametros
                 intentEditarFigura.putExtras(bundleEditarAgregarFigura);
                 startActivity(intentEditarFigura);

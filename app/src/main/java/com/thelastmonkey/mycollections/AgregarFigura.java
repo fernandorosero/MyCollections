@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.thelastmonkey.mycollections.dto.FiguraDTO;
 import com.thelastmonkey.mycollections.util.MyCollectionConstant;
 import com.thelastmonkey.mycollections.util.MyCollectionUtil;
 
@@ -53,9 +54,11 @@ public class AgregarFigura extends AppCompatActivity {
     ImageView imageViewTres;
     Button btnAgregarFigura;
 
+    private final int CRO = 0;
     private final int UNO = 1;
     private final int DOS = 2;
     private final int TRES = 3;
+    private final String EDITAR = "Editar: ";
 
     int imagenSeleccionadaGlobal;
 
@@ -65,7 +68,8 @@ public class AgregarFigura extends AppCompatActivity {
     String editar;
 
     List<String> pathImagenesAgregadas = new ArrayList<String>();
-
+    //Recojo los datos recibidos a la vista con try y catch si no hay datos
+    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,22 +89,54 @@ public class AgregarFigura extends AppCompatActivity {
         btnAgregarFigura = (Button)findViewById(R.id.btnAgregarFigura);
 
 
+        //Dimenciono el List
+        pathImagenesAgregadas.add(0,"");
+        pathImagenesAgregadas.add(1,"");
+        pathImagenesAgregadas.add(2,"");
 
-        //Recojo los datos recibidos a la vista
-        final Bundle bundle = getIntent().getExtras();
 
-        if(bundle.getString(MyCollectionConstant.PARAMETRO_EDITAR) != null){
-            Log.i("***********", "EDITAR");
+        //Recojo los datos
+        bundle = getIntent().getExtras();
+        String idFigura = null;
+        try {
+
+            idFigura = bundle.getString(MyCollectionConstant.PARAMETRO_ID_FIGURA);
+            String nombreFigura = bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_FIGURA);
+
+            if(idFigura != null){
+                Log.i("Editosss", idFigura);
+            }
+
+        }catch (Exception e){}
+
+        if(idFigura != null){//Editar
+            setTitle(EDITAR + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_FIGURA));
+            //editTextNombreAgregarFigura.setText(bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_FIGURA));
+
+            FiguraDTO figuraDTO = MyCollectionUtil.getFiguraDTO(AgregarFigura.this,bundle.getString(MyCollectionConstant.PARAMETRO_ID_FIGURA));
+            editTextNombreAgregarFigura.setText(figuraDTO.getNombre());
+            editTextFechaCompra.setText(figuraDTO.getFechaCompra());
+            editTextPrecioCompra.setText(figuraDTO.getPrecioCompra());
+            editTextPrecioVenta.setText(figuraDTO.getPrecioVenta());
+
+            if(figuraDTO.getVenta().equals("1")){
+                checkBoxFiguraVenta.setChecked(true);
+            }
+            else if(figuraDTO.getVenta().equals("0")){
+                checkBoxFiguraVenta.setChecked(false);
+            }
+
+        }else{  //Nuevo
+            editTextFechaCompra.setText(MyCollectionUtil.mostrarFecha());
+            editTextPrecioCompra.setText(CERO);
+            editTextPrecioVenta.setText(CERO);
         }
-        else{
-            Log.i("**********", "NUEVO");
-        }
+
 
         txtNombreCollectionAgregarFiguraTitulo.setText("Colección: " + bundle.getString(MyCollectionConstant.PARAMETRO_NOMBRE_COLECTION));
 
-        editTextFechaCompra.setText(MyCollectionUtil.mostrarFecha());
-        editTextPrecioCompra.setText(CERO);
-        editTextPrecioVenta.setText(CERO);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -264,12 +300,12 @@ public class AgregarFigura extends AppCompatActivity {
                                 @Override
                                 public void onScanCompleted(String path, Uri uri) {
                                     Log.i("ExternalStorage", "Scanned " + path + ":");
-                                    if(imagenSeleccionadaGlobal==UNO){
-                                        pathImagenesAgregadas.add(UNO,path);
-                                    }else if(imagenSeleccionadaGlobal==DOS){
-                                        pathImagenesAgregadas.add(DOS,path);
-                                    }else if(imagenSeleccionadaGlobal==TRES){
-                                        pathImagenesAgregadas.add(TRES,path);
+                                    if(imagenSeleccionadaGlobal == UNO){
+                                        pathImagenesAgregadas.add(CRO, path);
+                                    }else if(imagenSeleccionadaGlobal == DOS){
+                                        pathImagenesAgregadas.add(UNO, path);
+                                    }else if(imagenSeleccionadaGlobal == TRES){
+                                        pathImagenesAgregadas.add(DOS, path);
                                     }
 
                                     //imagenPathGuardar = path;
@@ -292,14 +328,14 @@ public class AgregarFigura extends AppCompatActivity {
                 case MyCollectionConstant.SELECT_PICTURE:
                     Uri path = data.getData();
                     Log.i("path galeria ok: " , String.valueOf(data.getData()));
-                    if(imagenSeleccionadaGlobal==UNO){
-                        pathImagenesAgregadas.add(0,String.valueOf(data.getData()));
+                    if(imagenSeleccionadaGlobal == UNO){
+                        pathImagenesAgregadas.add(CRO, String.valueOf(data.getData()));
                         imageViewUno.setImageURI(path);
-                    }else if(imagenSeleccionadaGlobal==DOS){
-                        pathImagenesAgregadas.add(1,String.valueOf(data.getData()));
+                    }else if(imagenSeleccionadaGlobal == DOS){
+                        pathImagenesAgregadas.add(UNO, String.valueOf(data.getData()));
                         imageViewDos.setImageURI(path);
-                    }else if(imagenSeleccionadaGlobal==TRES){
-                        pathImagenesAgregadas.add(2,String.valueOf(data.getData()));
+                    }else if(imagenSeleccionadaGlobal == TRES){
+                        pathImagenesAgregadas.add(DOS, String.valueOf(data.getData()));
                         imageViewTres.setImageURI(path);
                     }
 

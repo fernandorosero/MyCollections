@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.thelastmonkey.mycollections.DBAdapter;
 import com.thelastmonkey.mycollections.bdmycollections.DatabaseMyCollections;
+import com.thelastmonkey.mycollections.dto.FiguraDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -155,5 +156,26 @@ public class MyCollectionUtil {
         return idImagen;
     }
 
+    public static FiguraDTO getFiguraDTO(Context contexto, String idFigura){
+        FiguraDTO figuraDTO = new FiguraDTO();
+        String sentenciaSQL;
+        sentenciaSQL = "select * from Figura where idFigura = '"+idFigura+"'";
+        //Conecto con la bbdd
+        DatabaseMyCollections db_myCollection = new DatabaseMyCollections(contexto, DBAdapter.BBDD_Nombre,null, DBAdapter.BBDD_VERSION);
+        //Acceso de escritura
+        db = db_myCollection.getWritableDatabase();
+        Cursor cursorGetFigura;
+        //Compruebo si existe la db
+        if(db != null){
+            cursorGetFigura = db.rawQuery(sentenciaSQL,null);
+            cursorGetFigura.moveToFirst();
+            figuraDTO.setNombre(cursorGetFigura.getString(cursorGetFigura.getColumnIndex("nombre")));
+            figuraDTO.setFechaCompra(cursorGetFigura.getString(cursorGetFigura.getColumnIndex("fechaCompra")));
+            figuraDTO.setPrecioCompra(cursorGetFigura.getString(cursorGetFigura.getColumnIndex("precioCompra")));
+            figuraDTO.setPrecioVenta(cursorGetFigura.getString(cursorGetFigura.getColumnIndex("precioVenta")));
+            figuraDTO.setVenta(cursorGetFigura.getString(cursorGetFigura.getColumnIndex("venta")));
+        }
+        return  figuraDTO;
+    }
 
 }
