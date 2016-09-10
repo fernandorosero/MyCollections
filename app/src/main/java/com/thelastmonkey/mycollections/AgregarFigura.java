@@ -92,6 +92,7 @@ public class AgregarFigura extends AppCompatActivity {
 
 
         //Dimenciono el List
+        pathImagenesAgregadas.clear();
         pathImagenesAgregadas.add(0,"");
         pathImagenesAgregadas.add(1,"");
         pathImagenesAgregadas.add(2,"");

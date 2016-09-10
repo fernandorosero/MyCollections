@@ -137,6 +137,7 @@ public class MyCollectionUtil {
         //Compruebo si existe
         if (db != null) {
 
+            Log.i("Aqui empieza todo", String.valueOf(pathFiguras.size()));
             for (int i = 0; i < pathFiguras.size(); i++) {
                 sentenciaSQL = "insert into FiguraImagen(idFigura,idImagen,fecha) values('"+idFigura+"','"+createImagen(pathFiguras.get(i).toString(),db)+"','"+MyCollectionUtil.mostrarFecha()+"');";
                 db.execSQL(sentenciaSQL);
