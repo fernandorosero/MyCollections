@@ -368,7 +368,8 @@ public class Collection_main extends AppCompatActivity {
 
 
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    imageViewCollectionNuevo.setImageBitmap(bitmap);
+                    //imageViewCollectionNuevo.setImageBitmap(bitmap);
+                    imageViewCollectionNuevo.setImageBitmap(MyCollectionUtil.redimensionarImagen(bitmap,30,30));
                     break;
                 case MyCollectionConstant.SELECT_PICTURE:
                     Uri path = data.getData();

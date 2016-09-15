@@ -3,6 +3,8 @@ package com.thelastmonkey.mycollections.util;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.util.Log;
 
 import com.thelastmonkey.mycollections.DBAdapter;
@@ -236,6 +238,22 @@ public class MyCollectionUtil {
         }
 
         return listImagenDTO;
+    }
+
+    public static Bitmap redimensionarImagen(Bitmap mBitmap, float newWidth, float newHeight){
+        //Redimensiono la imagen
+        int width = mBitmap.getWidth();
+        int height = mBitmap.getHeight();
+
+        float scaleWidth = ((float)newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        //Creo un matrix para su manipulación
+        Matrix matrix = new Matrix();
+
+        //Cambio el tamaño de la imagen
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false);
     }
 
 }
